@@ -4,6 +4,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <style>
+        body {
+            background-color: #FCC;
+        }
+    </style>
+
     <script type="text/javascript" src="https://rawgithub.com/cujojs/curl/master/dist/curl/curl.js"></script>
 
 </head>
@@ -15,7 +21,7 @@
     </figure>
 
     <script type="text/javascript">
-        curl(['http://interactive.guim.co.uk/embed/iframe-wrapper/0.2/boot.js']).then(function(app) {
+        curl(['http://interactive.guim.co.uk/embed/iframe-wrapper/0.1/boot.js']).then(function(app) {
             var el = document.querySelector('.interactive');
             app.boot(el);
         });
