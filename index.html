@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script type="text/javascript" src="https://rawgithub.com/cujojs/curl/master/dist/curl/curl.js"></script>
+
+</head>
+<body>
+
+    <h1>iframeMessenger test page</h1>
+    <figure class="interactive">
+        <a href="iframed-page.html">I'm an iframe link.</a>
+    </figure>
+
+    <script type="text/javascript">
+        curl(['http://interactive.guim.co.uk/embed/iframe-wrapper/0.2/boot.js']).then(function(app) {
+            var el = document.querySelector('.interactive');
+            app.boot(el);
+        });
+    </script>
+</body>
+</html>

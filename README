@@ -1,0 +1,9 @@
+iframeMessenger
+===============
+
+postMessage interface allowing for the resizing of containing iframe
+and link navigation of the parent window.
+
+Changelog
+---------
+0.1: Inital release.
