@@ -49,7 +49,11 @@
          */
         function enableAutoResize() {
             _handleResize();
-            window.addEventListener('resize', _handleResize, false);
+
+            // Adding new elements or expanding element dimensions
+            // does not trigger a resize event, so height changes
+            // need to be checked for continually.
+            setInterval(_handleResize, 200);
         }
 
         return {
