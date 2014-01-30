@@ -119,6 +119,9 @@
             _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
             document.documentElement.style.height = 'auto';
             document.body.style.height = 'auto';
+
+            // Fix Chrome's scrollbar
+            document.querySelector('html').style.overflow = 'hidden';
         }
 
         _setupPage();
