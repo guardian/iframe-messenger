@@ -88,6 +88,14 @@
             event.preventDefault();
             iframeMessenger.navigate(this.href);
         }, false);
+
+
+
+        var box = document.createElement('div');
+        box.setAttribute('style', 'width: 400px; height: 900px; background-color: blue');
+        setTimeout(function() {
+            document.body.appendChild(box);
+        }, 2000);
     </script>
 </body>
 </html>

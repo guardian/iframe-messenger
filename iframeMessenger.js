@@ -2,9 +2,15 @@
     'use strict';
 
     var iframeMessenger = (function() {
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+        var REFRESH_DELAY = 200;
+        var _currentHeight = 0;
+        var _bodyMargin = 0;
+
         function _postMessage(message) {
             window.parent.postMessage(JSON.stringify(message), '*');
         }
+
 
         /**
          * Navigate parent page to new URL.
@@ -19,6 +25,7 @@
             _postMessage(message);
         }
 
+
         /**
          * Resize containing iframe.
          * @param  {number|string} height Can be number or percentage.
@@ -32,10 +39,12 @@
             _postMessage(message);
         }
 
-        var _currentHeight = 0;
+
+        /**
+         * Handle document size change, send containing iframe a postMessage.
+         */
         function _handleResize() {
-            // clientHeight is off by ~20 pixels (margin top?)
-            var newHeight = document.body.clientHeight + 20;
+            var newHeight = _getHeight();
             if (_currentHeight === newHeight) {
                 return;
             }
@@ -44,17 +53,75 @@
             _currentHeight = newHeight;
         }
 
+
+        /**
+         * Get the current document height.
+         * @return {int} Height integer
+         */
+        function _getHeight() {
+            return parseInt(document.body.offsetHeight, 10) + _bodyMargin;
+        }
+
+
+        /**
+         * Interval resize loop.
+         */
+        function _setupInterval() {
+            setInterval(_handleResize, REFRESH_DELAY);
+        }
+
+
+        /**
+         * Listen for DOM modifcations.
+         */
+        function _setupMutationObserver() {
+            var target = document.querySelector('body');
+            var observer = new MutationObserver(function(mutations) {
+                 mutations.forEach(function(mutation) {
+                    _handleResize();
+                  });
+             });
+
+            var config = {
+                attributes: true,
+                childList: true,
+                characterData: true,
+                subtree: true
+            };
+
+            observer.observe(target, config);
+        }
+
+
         /**
          * Start listening to resize events and trigger a resize.
          */
         function enableAutoResize() {
             _handleResize();
 
-            // Adding new elements or expanding element dimensions
-            // does not trigger a resize event, so height changes
-            // need to be checked for continually.
-            setInterval(_handleResize, 200);
+            window.addEventListener('resize', _handleResize);
+
+            // Check for DOM changes
+            if (MutationObserver)
+                _setupMutationObserver();
+            else {
+                _setupInterval();
+            }
         }
+
+
+        /**
+         * Prep-page for messaging.
+         */
+        function _setupPage() {
+            // IE9+ as IE8 does not support getComputedStyle
+            var styles = getComputedStyle(document.body);
+            _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
+            document.documentElement.style.height = 'auto';
+            document.body.style.height = 'auto';
+        }
+
+        _setupPage();
 
         return {
             resize: resize,
@@ -65,7 +132,7 @@
 
     // CommonJS module
     if ( typeof module !== 'undefined' && module.exports ) {
-            module.exports = iframeMessenger;
+        module.exports = iframeMessenger;
     }
 
     // AMD module
@@ -75,6 +142,6 @@
 
     // browser global
     else {
-            global.iframeMessenger = iframeMessenger;
+        global.iframeMessenger = iframeMessenger;
     }
-}( (typeof window !== 'undefined') ? window : this ));
+}((typeof window !== 'undefined') ? window : this ));
