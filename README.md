@@ -14,7 +14,7 @@ Usage
 Include the library within your page or application via `<script>` or `require()`. Call a method. You'll probably want to call enableAutoResize().
 
 Auto-resize example:
-```
+```html
 <script src="libs/iframeMessenger.js"></script>
 <script>
     iframeMessenger.enableAutoResize();
@@ -22,7 +22,7 @@ Auto-resize example:
 ```
 
 Send all links to parent window example:
-```
+```html
 <script src="libs/iframeMessenger.js"></script>
 <script>
     var links = document.querySelectorAll('a');
