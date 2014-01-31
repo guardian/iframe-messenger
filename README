@@ -62,18 +62,18 @@ description:
 - Navigate parent window to specified URL
 
 
-CDN Path
-========
+Latest CDN version
+==================
 
-http://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js
+http://interactive.guim.co.uk/libs/iframe-messenger/0.2.0/iframeMessenger.js
 
 
 Changelog
 =========
 
-0.2:
+0.2.0:
 - Added DOM modification detection with setInterval fallback
 - Replaced hard-coded margin with getComputedStyle() values
 
-0.1:
+0.1.0:
 - Inital release.
