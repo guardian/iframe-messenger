@@ -46,6 +46,11 @@ Specify a height (int) for the iframe wrapper
 ### `.navigate(url)`
 Navigate parent window to specified URL (string)
 
+## Similar projects
+ - **easyXDM**: De facto standard https://github.com/oyvindkinsey/easyXDM
+ - **jquery-iframe-auto-height**: Good cross-browser support https://github.com/house9/jquery-iframe-auto-height
+ - **iframe-resizer**: DOM modification event idea came from here https://github.com/davidjbradshaw/iframe-resizer
+
 
 
 ## Changelog
