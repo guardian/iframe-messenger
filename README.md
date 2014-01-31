@@ -3,6 +3,11 @@ iframeMessenger
 postMessage interface allowing for the resizing of containing iframe
 and link navigation of the parent window.
 
+
+## Latest CDN version
+
+http://interactive.guim.co.uk/libs/iframe-messenger/0.2.0/iframeMessenger.js
+
 Usage
 =====
 
@@ -32,22 +37,15 @@ Send all links to parent window example:
 
 ## Methods
 
-### enableAutoResize
-Params: none
-Description: Update iframe wrapper to match document height
+### `.enableAutoResize()`
+Update iframe wrapper to match document height
 
-### resize
-Params: height (int)
-Description: Specify a height for the iframe wrapper
+### `.resize(height)`
+Specify a height (int) for the iframe wrapper
 
-### navigate
-Params: url (string)
-Description: Navigate parent window to specified URL
+### `.navigate(url)`
+Navigate parent window to specified URL (string)
 
-
-## Latest CDN version
-
-http://interactive.guim.co.uk/libs/iframe-messenger/0.2.0/iframeMessenger.js
 
 
 ## Changelog
