@@ -6,7 +6,7 @@ and link navigation of the parent window.
 
 ## Latest CDN version
 
-http://interactive.guim.co.uk/libs/iframe-messenger/0.2.0/iframeMessenger.js
+http://interactive.guim.co.uk/libs/iframe-messenger/0.2.1/iframeMessenger.js
 
 Usage
 =====
@@ -37,8 +37,13 @@ Send all links to parent window example:
 
 ## Methods
 
-### `.enableAutoResize()`
-Update iframe wrapper to match document height
+### `.enableAutoResize(options)`
+Update iframe wrapper to match document height. Optional options (object) can be provided.
+```JavaScript
+{
+    absoluteHeight: false // Check absolute height of every element
+}
+```
 
 ### `.resize(height)`
 Specify a height (int) for the iframe wrapper
@@ -54,6 +59,8 @@ Navigate parent window to specified URL (string)
 
 
 ## Changelog
+0.2.1:
+- Added `absoluteHeight` option to auto-resize to handle absolute absolute positioned elements
 
 0.2.0:
 - Added DOM modification detection with setInterval fallback

@@ -26,7 +26,12 @@
         #wrapper {
             overflow: auto;
             border: 1px dashed pink;
+			position: absolute;
+			top: 0;
+			left: 0;
         }
+
+
     </style>
 </head>
 <body>
@@ -77,10 +82,12 @@
     </div>
 
 
-    <script type="text/javascript" src="iframeMessenger.js"></script>
+    <script type="text/javascript" src="../src/iframeMessenger.js"></script>
     <script>
         // Auto resize
-        iframeMessenger.enableAutoResize();
+		iframeMessenger.enableAutoResize({
+			absoluteHeight: true 
+		});
 
         // Parent page link navigation
         var link = document.querySelector('.parentNavLink');
@@ -92,7 +99,7 @@
 
 
         var box = document.createElement('div');
-        box.setAttribute('style', 'width: 400px; height: 900px; background-color: blue');
+        box.setAttribute('style', 'width: 400px; height: 900px; background-color: blue; position: absolute; right: 300px; top: 3000px;');
         setTimeout(function() {
             document.body.appendChild(box);
         }, 2000);
