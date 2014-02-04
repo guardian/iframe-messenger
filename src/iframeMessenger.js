@@ -152,12 +152,13 @@
             document.querySelector('html').style.overflow = 'hidden';
         }
 
-        _setupPage();
+        window.addEventListener('DOMContentLoaded', _setupPage, false);
 
         return {
             resize: resize,
             navigate: navigate,
-            enableAutoResize: enableAutoResize
+            enableAutoResize: enableAutoResize,
+            getAbsoluteHeight: _getAbsoluteHeight
         };
     }());
 
