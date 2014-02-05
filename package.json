@@ -2,16 +2,15 @@
   "name": "iframe-messenger",
   "version": "0.2.1",
   "description": "iframe messenger",
-  "main": "index.js",
+  "main": "src/iframeMessenger.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/GuardianInteractive/iframe-messenger.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Guardian Interactive",
   "bugs": {
     "url": "https://github.com/GuardianInteractive/iframe-messenger/issues"
   },
