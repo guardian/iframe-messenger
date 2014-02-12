@@ -54,6 +54,14 @@
         }
 
         /**
+         * Get the current document height.
+         * @return {int} Height integer
+         */
+        function _getHeight() {
+            return parseInt(document.body.offsetHeight, 10) + _bodyMargin;
+        }
+
+        /**
          * Get the bottom most position of all elements on the page.
          * NOTE: Absolute positioned elements are removed from the page flow
          *       so are not included in the .innerHeight of the page.
@@ -79,7 +87,7 @@
          * Handle document size change, send containing iframe a postMessage.
          */
         function _handleResize() {
-            var newHeight = _getAbsoluteHeight();
+            var newHeight = (_options.absoluteHeight) ? _getAbsoluteHeight() : _getHeight();
             if (_currentHeight === newHeight) {
                 return;
             }

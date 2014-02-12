@@ -19,7 +19,7 @@
         width: 400px;
         -webkit-transform: translate(100px) rotate(-90deg);
         -webkit-transform-origin: 100% 100%;
-        -o-transform:translate(100px) rotate(-90deg); 
+        -o-transform:translate(100px) rotate(-90deg);
         -o-transform-origin: 100% 100%;
         transform: translate(100px) rotate(-90deg);
         transform-origin: 100% 100%;
@@ -30,7 +30,7 @@
   <script src="../../src/iframeMessenger.js"></script>
 </head>
 <body>
-  
+
     <div id="parent">
         <div id="child">
             Test content
@@ -38,7 +38,7 @@
     </div>
 
     <script>
-      iframeMessenger.enableAutoResize();
+      iframeMessenger.enableAutoResize({ absoluteHeight: true });
     </script>
 
 </body>
