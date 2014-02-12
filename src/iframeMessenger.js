@@ -1,3 +1,11 @@
+/**
+ * iframe-messenger
+ * 
+ * version: 0.2.2
+ * source: https://github.com/GuardianInteractive/iframe-messenger
+ * 
+ */
+
 (function (global) {
     'use strict';
 
