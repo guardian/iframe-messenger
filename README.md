@@ -6,7 +6,7 @@ and link navigation of the parent window.
 
 ## Latest CDN version
 
-http://interactive.guim.co.uk/libs/iframe-messenger/0.2.1/iframeMessenger.js
+http://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js
 
 Usage
 =====
