@@ -85,25 +85,7 @@
     <script type="text/javascript" src="../src/iframeMessenger.js"></script>
     <script>
         // Auto resize
-		// iframeMessenger.enableAutoResize({
-		// 	absoluteHeight: true 
-		// });
-        iframeMessenger.resize(80);
-
-        // Parent page link navigation
-        var link = document.querySelector('.parentNavLink');
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-            iframeMessenger.navigate(this.href);
-        }, false);
-
-
-
-        var box = document.createElement('div');
-        box.setAttribute('style', 'width: 400px; height: 900px; background-color: blue; position: absolute; right: 300px; top: 3000px;');
-        setTimeout(function() {
-            document.body.appendChild(box);
-        }, 2000);
+		iframeMessenger.enableAutoResize();
     </script>
 </body>
 </html>

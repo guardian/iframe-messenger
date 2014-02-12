@@ -2,6 +2,7 @@
     'use strict';
 
     var iframeMessenger = (function() {
+        var pageURL = window.location.origin + window.location.pathname;
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         var REFRESH_DELAY = 200;
         var _currentHeight = 0;
@@ -22,7 +23,8 @@
         function navigate(url) {
             var message = {
                 type:'navigate',
-                value: url
+                value: url,
+                href: pageURL
             };
 
             _postMessage(message);
@@ -36,7 +38,8 @@
         function resize(height) {
             var message = {
                 type:'set-height',
-                value: height
+                value: height,
+                href: pageURL
             };
 
             _postMessage(message);
@@ -54,7 +57,7 @@
          * @return {int} Greatest value of an elements bounding bottom.
          */
         function _getAbsoluteHeight() {
-            var allElements = document.querySelectorAll('*');
+            var allElements = document.querySelectorAll('body *');
             var maxBottomVal = 0;
             for (var i = 0; i < allElements.length; i++) {
                 if (allElements[i].getBoundingClientRect().bottom > maxBottomVal) {
@@ -65,19 +68,10 @@
         }
 
         /**
-         * Get the current document height.
-         * @return {int} Height integer
-         */
-        function _getHeight() {
-            return parseInt(document.body.offsetHeight, 10) + _bodyMargin;
-        }
-
-
-        /**
          * Handle document size change, send containing iframe a postMessage.
          */
         function _handleResize() {
-            var newHeight = (_options.absoluteHeight) ? _getAbsoluteHeight() : _getHeight();
+            var newHeight = _getAbsoluteHeight();
             if (_currentHeight === newHeight) {
                 return;
             }
@@ -143,15 +137,14 @@
          */
         function _setupPage() {
             // IE9+ as IE8 does not support getComputedStyle
-            if (document.body && getComputedStyle) {
-                var styles = getComputedStyle(document.body);
-                _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
-                document.documentElement.style.height = 'auto';
-                document.body.style.height = 'auto';
+            if (!document.body || !getComputedStyle) {
+                return;
             }
 
-            // Fix Chrome's scrollbar
-            document.querySelector('html').style.overflow = 'hidden';
+            var styles = getComputedStyle(document.body);
+            _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
+            document.documentElement.style.height = 'auto';
+            document.body.style.height = 'auto';
         }
 
         window.addEventListener('DOMContentLoaded', _setupPage, false);

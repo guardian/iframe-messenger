@@ -1,20 +1,12 @@
+<!DOCTYPE html>
+<html>
 <head>
-  <title>No doctype</title>
+  <meta charset="utf-8">
+  <title>Multi iframe 02</title>
 
   <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-
-    #parent {
-      background: red;
-    }
-
-    #child {
-      height: 400px;
-      margin-top: 100px;
-    }
+    body { margin: 0; padding: 0; }
+    #child { height: 800px; }
   </style>
 
   <script src="../../src/iframeMessenger.js"></script>
@@ -27,11 +19,8 @@
   		</div>
   	</div>
 
-    <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
-
     <script>
       iframeMessenger.enableAutoResize();
     </script>
-
 </body>
 </html>

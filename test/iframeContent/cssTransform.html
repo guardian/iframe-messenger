@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CSS transform</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #parent {
+      background: red;
+    }
+
+    #child {
+        background: green;
+        width: 400px;
+        -webkit-transform: translate(100px) rotate(-90deg);
+        -webkit-transform-origin: 100% 100%;
+        -o-transform:translate(100px) rotate(-90deg); 
+        -o-transform-origin: 100% 100%;
+        transform: translate(100px) rotate(-90deg);
+        transform-origin: 100% 100%;
+        height: 200px;
+    }
+  </style>
+
+  <script src="../../src/iframeMessenger.js"></script>
+</head>
+<body>
+  
+    <div id="parent">
+        <div id="child">
+            Test content
+        </div>
+    </div>
+
+    <script>
+      iframeMessenger.enableAutoResize();
+    </script>
+
+</body>
+</html>

@@ -1,5 +1,6 @@
+<html>
 <head>
-  <title>No doctype</title>
+  <title>Absolute height with no doctype</title>
 
   <style>
     body {
@@ -13,7 +14,8 @@
 
     #child {
       height: 400px;
-      margin-top: 100px;
+      position: absolute;
+      top:100px;
     }
   </style>
 
@@ -27,10 +29,10 @@
   		</div>
   	</div>
 
-    <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
-
     <script>
-      iframeMessenger.enableAutoResize();
+      iframeMessenger.enableAutoResize({
+        absoluteHeight: true
+      });
     </script>
 
 </body>

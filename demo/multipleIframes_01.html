@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <style>
+        body {
+            background-color: #CD5;
+        }
+
+        p {
+            width: 200px;
+            margin: 10px;
+            float: left;
+        }
+
+        @media (max-width: 400px) {
+          body {
+            background-color: red;
+          }
+        }
+
+        #wrapper {
+            overflow: auto;
+            border: 1px dashed pink;
+			position: absolute;
+			top: 0;
+			left: 0;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+    </div>
+
+
+    <script type="text/javascript" src="../src/iframeMessenger.js"></script>
+    <script>
+        // Auto resize
+		iframeMessenger.enableAutoResize();
+    </script>
+</body>
+</html>
