@@ -1,4 +1,11 @@
-asyncTest("iframeMessanger .resize()", function() {
+module('iframeMessanger', {
+	teardown: function() {
+		var iframe = document.querySelector("#qunit-fixture iframe");
+		iframe.src = '';
+	}
+});
+
+asyncTest("resize()", function() {
 	window.
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
@@ -7,7 +14,7 @@ asyncTest("iframeMessanger .resize()", function() {
 		equal(data['value'], '900', 'should send value of 900.');
 
 		// Clear event listener
-		this.removeEventListener('message', arguments.callee,false);
+		this.removeEventListener('message', arguments.callee, false);
 
 		start();
 	});
@@ -16,8 +23,25 @@ asyncTest("iframeMessanger .resize()", function() {
 	iframe.src = 'iframeContent/resizeDemo.html';
 });
 
+asyncTest(".resize() on page with no doctype", function() {
+	window.
+	window.addEventListener('message', function(event) {
+		var data = JSON.parse(event.data);
+		expect(2);
+		equal(data['type'], 'set-height', 'should send set-height type.');
+		equal(data['value'], '900', 'should send value of 900.');
 
-asyncTest("iframeMessanger enableAutoResize with absoluteHeight set", function() {
+		// Clear event listener
+		this.removeEventListener('message', arguments.callee, false);
+
+		start();
+	});
+
+	var iframe = document.querySelector("#qunit-fixture iframe");
+	iframe.src = 'iframeContent/no-doctype.html';
+});
+
+asyncTest("enableAutoResize with absoluteHeight set", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
@@ -25,7 +49,7 @@ asyncTest("iframeMessanger enableAutoResize with absoluteHeight set", function()
 		equal(data['value'], '500', 'should have 500px height.');
 
 		// Clear event listener
-		this.removeEventListener('message', arguments.callee,false);
+		this.removeEventListener('message', arguments.callee, false);
 
 		start();
 	});
@@ -35,7 +59,7 @@ asyncTest("iframeMessanger enableAutoResize with absoluteHeight set", function()
 });
 
 
-asyncTest("iframeMessanger .navigate()", function() {
+asyncTest(".navigate()", function() {
 	window.
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
@@ -44,7 +68,7 @@ asyncTest("iframeMessanger .navigate()", function() {
 		equal(data['value'], 'http://www.example.com/', 'should send correct string value.');
 
 		// Clear event listener
-		this.removeEventListener('message', arguments.callee,false);
+		this.removeEventListener('message', arguments.callee, false);
 
 		start();
 	});
@@ -52,5 +76,3 @@ asyncTest("iframeMessanger .navigate()", function() {
 	var iframe = document.querySelector("#qunit-fixture iframe");
 	iframe.src = 'iframeContent/navigateDemo.html';
 });
-
-

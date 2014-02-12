@@ -143,10 +143,12 @@
          */
         function _setupPage() {
             // IE9+ as IE8 does not support getComputedStyle
-            var styles = getComputedStyle(document.body);
-            _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
-            document.documentElement.style.height = 'auto';
-            document.body.style.height = 'auto';
+            if (document.body && getComputedStyle) {
+                var styles = getComputedStyle(document.body);
+                _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
+                document.documentElement.style.height = 'auto';
+                document.body.style.height = 'auto';
+            }
 
             // Fix Chrome's scrollbar
             document.querySelector('html').style.overflow = 'hidden';
