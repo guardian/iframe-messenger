@@ -1,9 +1,9 @@
 /**
  * iframe-messenger
- * 
+ *
  * version: 0.2.2
  * source: https://github.com/GuardianInteractive/iframe-messenger
- * 
+ *
  */
 
 (function (global) {
@@ -153,6 +153,9 @@
             _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
             document.documentElement.style.height = 'auto';
             document.body.style.height = 'auto';
+
+            // Fix Chrome's scrollbar
+            document.querySelector('html').style.overflow = 'hidden';
         }
 
         window.addEventListener('DOMContentLoaded', _setupPage, false);
