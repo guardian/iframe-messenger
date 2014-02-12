@@ -1,0 +1,37 @@
+<head>
+  <title>No doctype</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #parent {
+      background: red;
+    }
+
+    #child {
+      height: 400px;
+      margin-top: 100px;
+    }
+  </style>
+
+  <script src="../../src/iframeMessenger.js"></script>
+</head>
+<body>
+  
+  	<div id="parent">
+  		<div id="child">
+  			Test content
+  		</div>
+  	</div>
+
+    <script src="http://code.jquery.com/jquery-1.11.0.js"></script>
+
+    <script>
+      iframeMessenger.enableAutoResize();
+    </script>
+
+</body>
+</html>

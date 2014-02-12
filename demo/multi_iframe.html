@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-color: #FCC;
+        }
+    </style>
+
+    <script type="text/javascript" src="libs/curl.js"></script>
+
+</head>
+<body>
+
+    <h1>iframeMessenger test page</h1>
+
+    <h2>iframe 01</h2>
+    <figure class="interactive1">
+        <a href="multipleIframes_01.html">I'm an iframe link.</a>
+    </figure>
+
+    <script type="text/javascript">
+        curl(['libs/boot.js']).then(function(app) {
+            var el = document.querySelector('.interactive1');
+            app.boot(el);
+        });
+    </script>
+
+
+    <h2>iframe 02</h2>
+    <figure class="interactive2">
+        <a href="multipleIframes_02.html">I'm an iframe link.</a>
+    </figure>
+
+    <script type="text/javascript">
+        curl(['libs/boot.js']).then(function(app) {
+            var el = document.querySelector('.interactive2');
+            app.boot(el);
+        });
+    </script>
+</body>
+</html>

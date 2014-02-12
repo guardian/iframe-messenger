@@ -1,0 +1,22 @@
+{
+  "name": "iframe-messenger",
+  "version": "0.2.1",
+  "description": "iframe messenger",
+  "main": "src/iframeMessenger.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/GuardianInteractive/iframe-messenger.git"
+  },
+  "author": "Guardian Interactive",
+  "bugs": {
+    "url": "https://github.com/GuardianInteractive/iframe-messenger/issues"
+  },
+  "homepage": "https://github.com/GuardianInteractive/iframe-messenger",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-qunit": "~0.4.0"
+  }
+}
