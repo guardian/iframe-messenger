@@ -10,7 +10,7 @@
     'use strict';
 
     var iframeMessenger = (function() {
-        var pageURL = window.location.origin + window.location.pathname;
+        var pageURL = window.location.href;
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         var REFRESH_DELAY = 200;
         var _currentHeight = 0;
