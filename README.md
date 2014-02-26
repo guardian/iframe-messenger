@@ -39,9 +39,13 @@ Send all links to parent window example:
 
 ### `.enableAutoResize(options)`
 Update iframe wrapper to match document height. Optional options (object) can be provided.
+
+**NOTE**: `absoluteHeight` checks the position of every element on the page, this has a significant
+performance impact.
+
 ```JavaScript
 {
-    absoluteHeight: false // Check absolute height of every element
+    absoluteHeight: false // Check absolute height of every element, slow
 }
 ```
 
@@ -59,6 +63,10 @@ Navigate parent window to specified URL (string)
 
 
 ## Changelog
+0.2.2
+- Send iframe location.href to identify it to parent listener
+- Added unit tests
+
 0.2.1:
 - Added `absoluteHeight` option to auto-resize to handle absolute absolute positioned elements
 
