@@ -23,6 +23,19 @@
             window.parent.postMessage(JSON.stringify(message), '*');
         }
 
+        /**
+         * Check if inside an iframe
+         * http://stackoverflow.com/a/326076
+         * @return {bool}
+         */
+        function inIframe() {
+            try {
+                return window.self !== window.top;
+            } catch (e) {
+                return true;
+            }
+        }
+
 
         /**
          * Navigate parent page to new URL.
@@ -166,7 +179,10 @@
             document.querySelector('html').style.overflow = 'hidden';
         }
 
-        window.addEventListener('DOMContentLoaded', _setupPage, false);
+        // Only setup the page if inside an iframe
+        if (inIframe()) {
+            window.addEventListener('DOMContentLoaded', _setupPage, false);
+        }
 
         return {
             resize: resize,
