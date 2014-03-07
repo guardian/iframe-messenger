@@ -45,7 +45,7 @@ performance impact.
 
 ```JavaScript
 {
-    absoluteHeight: false // Check absolute height of every element, slow
+    absoluteHeight: false // Check absolute height of every element, slow!
 }
 ```
 
@@ -55,6 +55,22 @@ Specify a height (int) for the iframe wrapper
 ### `.navigate(url)`
 Navigate parent window to specified URL (string)
 
+### `.scrollTo(x, y)`
+Sends request to scroll the parent page to a specified x, y position.
+
+### `.getPositionInformation(callback)`
+Ask parent page for position information and execute callback upon return post
+message.
+
+Sample of returned position data object:
+```
+{
+    'iframeTop':    300,    // iframe.getBoundingClientRect().top,
+    'innerHeight':  620,    // window.innerHeight,
+    'scrollY':      90      // window.pageYOffset
+}
+```
+
 ## Similar projects
  - **easyXDM**: De facto standard https://github.com/oyvindkinsey/easyXDM
  - **jquery-iframe-auto-height**: Good cross-browser support https://github.com/house9/jquery-iframe-auto-height
@@ -63,6 +79,10 @@ Navigate parent window to specified URL (string)
 
 
 ## Changelog
+0.2.3
+- Added .getPositionInformation(callback) and .scrollTo(x, y)
+- More tests
+
 0.2.2
 - Send iframe location.href to identify it to parent listener
 - Added unit tests
