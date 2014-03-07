@@ -37,7 +37,7 @@ Send all links to parent window example:
 
 ## Methods
 
-### `.enableAutoResize(options)`
+#### `.enableAutoResize(options)`
 Update iframe wrapper to match document height. Optional options (object) can be provided.
 
 **NOTE**: `absoluteHeight` checks the position of every element on the page, this has a significant
@@ -49,21 +49,21 @@ performance impact.
 }
 ```
 
-### `.resize(height)`
+#### `.resize(height)`
 Specify a height (int) for the iframe wrapper
 
-### `.navigate(url)`
+#### `.navigate(url)`
 Navigate parent window to specified URL (string)
 
-### `.scrollTo(x, y)`
+#### `.scrollTo(x, y)`
 Sends request to scroll the parent page to a specified x, y position.
 
-### `.getPositionInformation(callback)`
+#### `.getPositionInformation(callback)`
 Ask parent page for position information and execute callback upon return post
 message.
 
 Sample of returned position data object:
-```
+```Javascript
 {
     'iframeTop':    300,    // iframe.getBoundingClientRect().top,
     'innerHeight':  620,    // window.innerHeight,
