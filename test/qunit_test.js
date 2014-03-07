@@ -140,3 +140,56 @@ asyncTest("postMessage", function() {
 	var iframe02 = document.querySelector("#qunit-fixture #iframe02");
 	iframe02.src = iframe02Src;
 });
+
+
+
+asyncTest(".scrollTo()", function() {
+	window.addEventListener('message', function(event) {
+		var data = JSON.parse(event.data);
+		expect(3);
+		equal(data['type'], 'scroll-to', 'should send the scroll-to action.');
+		equal(data['x'], 0, 'should send x position value.');
+		equal(data['y'], 200, 'should send x position value.');
+
+		// Clear event listener
+		this.removeEventListener('message', arguments.callee, false);
+
+		start();
+	});
+
+	var iframe = document.querySelector("#qunit-fixture iframe");
+	iframe.src = 'iframeContent/scrollTo.html';
+});
+
+
+asyncTest(".getPositionInformation()", function() {
+	expect(2);
+
+	// Recive first request post message for positional information
+	window.addEventListener('message', function(event) {
+		var data = JSON.parse(event.data);
+		equal(data['type'], 'get-position', 'should send the get-position action.');
+
+		this.removeEventListener('message', arguments.callee, false);
+
+        // Send mock response to test the callback is called.
+        var message = {
+            'iframeTop':    iframe.getBoundingClientRect().top,
+            'innerHeight':  window.innerHeight,
+            'scrollY':      window.pageYOffset
+        };
+		iframe.contentWindow.postMessage(JSON.stringify(message), '*');
+	});
+
+	// Listen for successful callback post message
+	window.addEventListener('message', function(event) {
+		if (event.data === 'success') {
+			equal(event.data,  'success', 'callback should execute receipt of position formation');
+			start();
+		}
+    });
+
+
+	var iframe = document.querySelector("#qunit-fixture iframe");
+	iframe.src = 'iframeContent/getPositionInformation.html';
+});

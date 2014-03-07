@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.2
+ * version: 0.2.3
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
@@ -13,6 +13,7 @@
         var pageURL = window.location.href;
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         var REFRESH_DELAY = 200;
+        var _postMessageCallback;
         var _currentHeight = 0;
         var _bodyMargin = 0;
         var _options = {
@@ -25,10 +26,9 @@
 
         /**
          * Check if inside an iframe
-         * http://stackoverflow.com/a/326076
          * @return {bool}
          */
-        function inIframe() {
+        function _inIframe() {
             try {
                 return window.self !== window.top;
             } catch (e) {
@@ -149,7 +149,6 @@
             }
 
             _handleResize();
-
             window.addEventListener('resize', _handleResize);
 
             // Check for DOM changes
@@ -160,6 +159,51 @@
             }
         }
 
+
+
+        /**
+         * Handle postMessage response and trigger callback with data.
+         * @param  {object} event Post message event object
+         */
+        function _handlePostMessage(event) {
+            if (event.data) {
+                var data;
+                try {
+                    data = JSON.parse(event.data);
+                } catch(err) {
+                    console.error('Error parsing data. ' + err.toString());
+                }
+                _postMessageCallback(data);
+            }
+        }
+
+
+        /**
+         * Get postional information from parent page.
+         * @param  {Function} callback Callback to be trigger on response.
+         */
+        function getPositionInformation(callback) {
+            _postMessageCallback = callback;
+            _postMessage({
+                type:'get-position',
+                href: pageURL
+            });
+        }
+
+
+        /**
+         * Scroll the parent document to a specified position
+         * @param  {int} _x X position.
+         * @param  {int} _y Y position.
+         */
+        function scrollTo(_x, _y) {
+            _postMessage({
+                type:'scroll-to',
+                href: pageURL,
+                x: _x,
+                y: _y
+            });
+        }
 
         /**
          * Prep-page for messaging.
@@ -179,16 +223,19 @@
             document.querySelector('html').style.overflow = 'hidden';
         }
 
-        // Only setup the page if inside an iframe
-        if (inIframe()) {
+         // Only setup the page if inside an iframe
+        if (_inIframe()) {
             window.addEventListener('DOMContentLoaded', _setupPage, false);
+            window.addEventListener('message', _handlePostMessage, false);
         }
 
         return {
             resize: resize,
             navigate: navigate,
             enableAutoResize: enableAutoResize,
-            getAbsoluteHeight: _getAbsoluteHeight
+            scrollTo: scrollTo,
+            getAbsoluteHeight: _getAbsoluteHeight,
+            getPositionInformation: getPositionInformation
         };
     }());
 
