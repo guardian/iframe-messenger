@@ -165,7 +165,7 @@ asyncTest(".scrollTo()", function() {
 asyncTest(".getPositionInformation()", function() {
 	expect(2);
 
-	// Recive first request post message for positional information
+	// Receive first request post message for positional information
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		equal(data['type'], 'get-position', 'should send the get-position action.');
@@ -176,7 +176,7 @@ asyncTest(".getPositionInformation()", function() {
         var message = {
             'iframeTop':    iframe.getBoundingClientRect().top,
             'innerHeight':  window.innerHeight,
-            'scrollY':      window.pageYOffset
+            'pageYOffset':      window.pageYOffset
         };
 		iframe.contentWindow.postMessage(JSON.stringify(message), '*');
 	});
