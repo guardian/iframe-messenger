@@ -79,6 +79,10 @@ Sample of returned position data object:
 
 
 ## Changelog
+0.2.4
+- Remove trailing slash from location.href to prevent validation errors
+- Check received postMessage validity to prevent unsolicited responses
+
 0.2.3
 - Added .getPositionInformation(callback) and .scrollTo(x, y)
 - More tests
@@ -95,4 +99,4 @@ Sample of returned position data object:
 - Replaced hard-coded margin with getComputedStyle() values
 
 0.1.0:
-- Inital release.
+- Initial release.
