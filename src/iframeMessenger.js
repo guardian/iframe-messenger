@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.3
+ * version: 0.2.4
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
@@ -10,7 +10,10 @@
     'use strict';
 
     var iframeMessenger = (function() {
-        var pageURL = window.location.href;
+        // Remove trailing slash from location URL as AWS folders will add a
+        // missing trailing slash which can cause a verification error in the
+        // parent page logic.
+        var pageURL = window.location.href.replace(/\/$/, '');
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         var REFRESH_DELAY = 200;
         var _postMessageCallback;
@@ -78,7 +81,7 @@
          * Get the bottom most position of all elements on the page.
          * NOTE: Absolute positioned elements are removed from the page flow
          *       so are not included in the .innerHeight of the page.
-         *       Therefore, the height is retrieved via looping throught
+         *       Therefore, the height is retrieved via looping through
          *       every element and finding the one with greatest bounding
          *       bottom value. There is a performance hit relative to the number
          *       of elements on the page.
@@ -119,7 +122,7 @@
 
 
         /**
-         * Listen for DOM modifcations.
+         * Listen for DOM modifications.
          */
         function _setupMutationObserver() {
             var target = document.querySelector('body');
@@ -173,13 +176,23 @@
                 } catch(err) {
                     console.error('Error parsing data. ' + err.toString());
                 }
-                _postMessageCallback(data);
+
+
+                // The iframe receives unsolicited messages from the parent page
+                // such as Twitter widgets. Filter out only valid post messages.
+                if (data.hasOwnProperty('iframeTop') &&
+                    data.hasOwnProperty('innerHeight') &&
+                    data.hasOwnProperty('pageYOffset') &&
+                    typeof _postMessageCallback === 'function'
+                ) {
+                    _postMessageCallback(data);
+                }
             }
         }
 
 
         /**
-         * Get postional information from parent page.
+         * Get positional information from parent page.
          * @param  {Function} callback Callback to be trigger on response.
          */
         function getPositionInformation(callback) {

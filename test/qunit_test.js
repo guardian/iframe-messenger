@@ -22,6 +22,25 @@ asyncTest("resize()", function() {
 	iframe.src = 'iframeContent/resizeDemo.html';
 });
 
+asyncTest("removes trailing slash from URL in postMessage data", function() {
+	window.addEventListener('message', function(event) {
+		var data = JSON.parse(event.data);
+		var lastURLChar = data['href'].substr(-1);
+
+		expect(2);
+		equal(data['type'], 'set-height', 'should send set-height type.');
+		notEqual(lastURLChar, '/', 'should have removed trailing slash');
+
+		// Clear event listener
+		this.removeEventListener('message', arguments.callee, false);
+
+		start();
+	});
+
+	var iframe = document.querySelector("#qunit-fixture iframe");
+	iframe.src = 'iframeContent/multi-iframe-01.html?=/';
+});
+
 
 
 asyncTest("enableAutoResize with no doctype", function() {
@@ -193,3 +212,4 @@ asyncTest(".getPositionInformation()", function() {
 	var iframe = document.querySelector("#qunit-fixture iframe");
 	iframe.src = 'iframeContent/getPositionInformation.html';
 });
+
