@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.4
+ * version: 0.2.5
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
@@ -10,15 +10,12 @@
     'use strict';
 
     var iframeMessenger = (function() {
-        // Remove trailing slash from location URL as AWS folders will add a
-        // missing trailing slash which can cause a verification error in the
-        // parent page logic.
-        var pageURL = window.location.href.replace(/\/$/, '');
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         var REFRESH_DELAY = 200;
         var _postMessageCallback;
         var _currentHeight = 0;
         var _bodyMargin = 0;
+        var _images = [];
         var _options = {
             absoluteHeight: false
         };
@@ -47,8 +44,7 @@
         function navigate(url) {
             var message = {
                 type:'navigate',
-                value: url,
-                href: pageURL
+                value: url
             };
 
             _postMessage(message);
@@ -56,14 +52,27 @@
 
 
         /**
-         * Resize containing iframe.
-         * @param  {number|string} height Can be number or percentage.
+         * Resize the iframe element
+         * @param  {number|string} (optional) height Can be number or percentage
          */
         function resize(height) {
+            // If no height is provided use page height
+            if (typeof height === 'undefined') {
+                _handleResize();
+            } else {
+                _sendHeight(height);
+            }
+        }
+
+
+        /**
+         * Send height.
+         * @param  {number|string} height Can be number or percentage.
+         */
+        function _sendHeight(height) {
             var message = {
                 type:'set-height',
-                value: height,
-                href: pageURL
+                value: height
             };
 
             _postMessage(message);
@@ -74,7 +83,8 @@
          * @return {int} Height integer
          */
         function _getHeight() {
-            return parseInt(document.body.offsetHeight, 10) + _bodyMargin;
+            var height = document.defaultView.getComputedStyle(document.body).height;
+            return parseInt(height, 10) + _bodyMargin;
         }
 
         /**
@@ -96,6 +106,7 @@
                     maxBottomVal = allElements[i].getBoundingClientRect().bottom;
                 }
             }
+
             return maxBottomVal;
         }
 
@@ -108,7 +119,7 @@
                 return;
             }
 
-            resize(newHeight);
+            _sendHeight(newHeight);
             _currentHeight = newHeight;
         }
 
@@ -127,9 +138,8 @@
         function _setupMutationObserver() {
             var target = document.querySelector('body');
             var observer = new MutationObserver(function(mutations) {
-                 mutations.forEach(function(mutation) {
-                    _handleResize();
-                  });
+                _addImageLoadListeners();
+                _handleResize();
              });
 
             var config = {
@@ -151,13 +161,12 @@
                 _options.absoluteHeight = options.absoluteHeight || _options.absoluteHeight;
             }
 
-            _handleResize();
             window.addEventListener('resize', _handleResize);
 
             // Check for DOM changes
-            if (MutationObserver)
+            if (MutationObserver) {
                 _setupMutationObserver();
-            else {
+            } else {
                 _setupInterval();
             }
         }
@@ -180,7 +189,8 @@
 
                 // The iframe receives unsolicited messages from the parent page
                 // such as Twitter widgets. Filter out only valid post messages.
-                if (data.hasOwnProperty('iframeTop') &&
+                if (typeof data === 'object' &&
+                    data.hasOwnProperty('iframeTop') &&
                     data.hasOwnProperty('innerHeight') &&
                     data.hasOwnProperty('pageYOffset') &&
                     typeof _postMessageCallback === 'function'
@@ -198,8 +208,7 @@
         function getPositionInformation(callback) {
             _postMessageCallback = callback;
             _postMessage({
-                type:'get-position',
-                href: pageURL
+                type:'get-position'
             });
         }
 
@@ -212,7 +221,6 @@
         function scrollTo(_x, _y) {
             _postMessage({
                 type:'scroll-to',
-                href: pageURL,
                 x: _x,
                 y: _y
             });
@@ -232,8 +240,53 @@
             document.documentElement.style.height = 'auto';
             document.body.style.height = 'auto';
 
+            _addImageLoadListeners();
+
             // Fix Chrome's scrollbar
             document.querySelector('html').style.overflow = 'hidden';
+        }
+
+        /**
+         * Handle image load by triggering a resize
+         */
+        function _imageLoaded() {
+            // Remove image from loading stack
+            var imageIndex = _images.indexOf(this);
+            if (imageIndex !== -1) {
+                _images.splice(imageIndex, 1);
+            }
+
+            // Calculate new height
+            _handleResize();
+        }
+
+        /**
+         * Add 'load' event listener and store reference to image
+         * @param {elm} img Image being loaded
+         */
+        function _addImage(img) {
+            if (_images.indexOf(img) === -1) {
+                img.addEventListener('load', _imageLoaded);
+                _images.push(img);
+            }
+        }
+
+
+        /**
+         * Filter out images in the DOM that haven't loaded yet and add listener
+         */
+        function _addImageLoadListeners() {
+            for (var i = 0; i < document.images.length; i++) {
+                var image = document.images[i];
+                // Do nothing if image is already loaded
+                if (image.nodeName === 'IMG' &&
+                    image.src &&
+                    image.complete === false &&
+                    image.readyState !== 4)
+                {
+                    _addImage(image);
+                }
+            }
         }
 
          // Only setup the page if inside an iframe

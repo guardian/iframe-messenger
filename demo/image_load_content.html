@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+    <style>
+        body {
+            background-color: #CD5;
+        }
+
+        p {
+           /* width: 200px;
+            margin: 10px;
+            float: left;*/
+        }
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+        <p>This is a test</p>
+
+    </div>
+
+    <img src="http://www.ryanandcalder.co.uk/uploadedfiles/image/Animal%20Photos/dog.JPG">
+
+    <img src="https://s3.amazonaws.com/gdn-cdn/2013/jan/shard/shard-day.tiles/mobile_mres_l_l3.jpg">
+
+
+    <script type="text/javascript" src="../src/iframeMessenger.js"></script>
+    <script>
+        // Auto resize
+        iframeMessenger.enableAutoResize();
+
+        var img = new Image();
+
+        setTimeout(function() {
+            document.body.appendChild(img);
+        }, 2000);
+
+        setTimeout(function() {
+            img.src = 'http://upload.wikimedia.org/wikipedia/commons/9/9b/Icelandic_sheep_summer_06.jpg';
+        }, 3000);
+
+
+    </script>
+</body>
+</html>

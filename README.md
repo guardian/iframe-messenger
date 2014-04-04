@@ -50,7 +50,9 @@ performance impact.
 ```
 
 #### `.resize(height)`
-Specify a height (int) for the iframe wrapper
+(optional) `height` : INT or percentage eg '20%'
+Specify a height for the iframe wrapper. If no height is specifed the height
+of the current document is sent.
 
 #### `.navigate(url)`
 Navigate parent window to specified URL (string)
@@ -79,6 +81,11 @@ Sample of returned position data object:
 
 
 ## Changelog
+0.2.5
+- Listen for image load events and trigger resize
+- More sensible way for calculating height
+- Removed sending of 'href' for validation
+
 0.2.4
 - Remove trailing slash from location.href to prevent validation errors
 - Check received postMessage validity to prevent unsolicited responses

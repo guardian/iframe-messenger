@@ -5,7 +5,7 @@ module('iframeMessanger', {
 	}
 });
 
-asyncTest("resize()", function() {
+asyncTest("resize() with specific option", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
@@ -22,14 +22,13 @@ asyncTest("resize()", function() {
 	iframe.src = 'iframeContent/resizeDemo.html';
 });
 
-asyncTest("removes trailing slash from URL in postMessage data", function() {
+asyncTest("resize() with no option", function() {
 	window.addEventListener('message', function(event) {
+		console.log(event.data);
 		var data = JSON.parse(event.data);
-		var lastURLChar = data['href'].substr(-1);
-
 		expect(2);
 		equal(data['type'], 'set-height', 'should send set-height type.');
-		notEqual(lastURLChar, '/', 'should have removed trailing slash');
+		equal(data['value'], '444', 'should send value of 444.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -38,10 +37,8 @@ asyncTest("removes trailing slash from URL in postMessage data", function() {
 	});
 
 	var iframe = document.querySelector("#qunit-fixture iframe");
-	iframe.src = 'iframeContent/multi-iframe-01.html?=/';
+	iframe.src = 'iframeContent/resizeNoParamDemo.html';
 });
-
-
 
 asyncTest("enableAutoResize with no doctype", function() {
 	window.addEventListener('message', function(event) {
@@ -138,7 +135,7 @@ asyncTest("postMessage", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 
-		if (data.href === iframe02Src) {
+		if (event.source === iframe02.contentWindow) {
 			expect(2);
 			equal(data['type'], 'set-height', 'should should restrict to iframe source.');
 			equal(data['value'], '800', 'should send correct value.');
