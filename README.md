@@ -69,6 +69,7 @@ Sample of returned position data object:
 {
     'iframeTop':    300,    // iframe.getBoundingClientRect().top,
     'innerHeight':  620,    // window.innerHeight,
+    'innerWidth':   960,    // window.innerWidth,
     'pageYOffset':  90      // window.pageYOffset
 }
 ```
