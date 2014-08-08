@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            background-color: #FC0;
+        }
+    </style>
+
+</head>
+<body>
+
+    <h1>Location child page</h1>
+    <button id="test">Test</button>
+    <div id="output"></div>
+
+
+    <script type="text/javascript" src="../src/iframeMessenger.js"></script>
+    <script>
+        var output = document.querySelector('#output');
+        function checkLocation(location) {
+console.log(location);
+            output.innerHTML += JSON.stringify(location);
+        }
+        // Check location
+		iframeMessenger.getLocation(checkLocation);
+		iframeMessenger.getPositionInformation(checkLocation);
+        
+        var btn = document.querySelector('#test');
+        btn.addEventListener('click', function() {
+		    iframeMessenger.getPositionInformation(checkLocation);
+		    iframeMessenger.getLocation(checkLocation);
+        });
+    </script>
+
+</body>
+</html>

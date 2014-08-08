@@ -5,7 +5,8 @@ define([], function () {
             var iframe;
             var link = el.querySelector('a[href]');
 
-            function _postMessage(message) {
+            function _postMessage(message, id) {
+                message.id = id;
                 iframe.contentWindow.postMessage(JSON.stringify(message), '*');
             }
 
@@ -18,8 +19,7 @@ define([], function () {
 
                 // Listen for requests from the window
                 window.addEventListener('message', function(event) {
-                    if (//event.origin !== 'http://interactive.guim.co.uk' ||
-                        event.source !== iframe.contentWindow) {
+                    if (event.source !== iframe.contentWindow) {
                         return;
                     }
 
@@ -37,12 +37,26 @@ define([], function () {
                         case 'scroll-to':
                             window.scrollTo(message.x, message.y);
                             break;
+                        case 'get-location':
+                            _postMessage({
+                                'hash':     window.location.hash,
+                                'host':     window.location.host,
+                                'hostname': window.location.hostname,
+                                'href':     window.location.href,
+                                'origin':   window.location.origin,
+                                'pathname': window.location.pathname,
+                                'port':     window.location.port,
+                                'protocol': window.location.protocol,
+                                'search':   window.location.search
+                            }, message.id);
+                            break;
                         case 'get-position':
                             _postMessage({
                                 'iframeTop':    iframe.getBoundingClientRect().top,
                                 'innerHeight':  window.innerHeight,
+                                'innerWidth':   window.innerWidth,
                                 'pageYOffset':  window.pageYOffset
-                            });
+                            }, message.id);
                             break;
                         default:
                            console.error('Received unknown action from iframe: ', message);
@@ -58,3 +72,4 @@ define([], function () {
         }
     };
 });
+

@@ -12,7 +12,8 @@
     var iframeMessenger = (function() {
         var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         var REFRESH_DELAY = 200;
-        var _postMessageCallback;
+        var MSG_ID_PREFIX = 'iframeMessenger';
+        var _postMessageCallbacks = {};
         var _currentHeight = 0;
         var _bodyMargin = 0;
         var _images = [];
@@ -20,8 +21,26 @@
             absoluteHeight: false
         };
 
-        function _postMessage(message) {
+        function _postMessage(message, callback) {
+            var id = genID();
+            message.id = id;
+
+            // Store callback ready for post message event lookup
+            if (callback) {
+                _postMessageCallbacks[id] = callback;
+            }
+
             window.parent.postMessage(JSON.stringify(message), '*');
+        }
+
+        /**
+         * Generate a unique ID string using known prefix and random chars.
+         * @returns {string} unique ID
+         */
+        function genID() {
+            // Rnd logic from http://stackoverflow.com/a/8084248
+            var rnd = Math.random().toString(36).substr(2, 5);
+            return MSG_ID_PREFIX + ':' + rnd;
         }
 
         /**
@@ -186,16 +205,11 @@
                     console.error('Error parsing data. ' + err.toString());
                 }
 
-
-                // The iframe receives unsolicited messages from the parent page
-                // such as Twitter widgets. Filter out only valid post messages.
-                if (typeof data === 'object' &&
-                    data.hasOwnProperty('iframeTop') &&
-                    data.hasOwnProperty('innerHeight') &&
-                    data.hasOwnProperty('pageYOffset') &&
-                    typeof _postMessageCallback === 'function'
-                ) {
-                    _postMessageCallback(data);
+                // Check postmessage is exptected 
+                if (data.id && _postMessageCallbacks.hasOwnProperty(data.id)) {
+                    // Run callback with data a clean up afterwards
+                    _postMessageCallbacks[data.id](data);
+                    delete _postMessageCallbacks[data.id];
                 }
             }
         }
@@ -206,10 +220,19 @@
          * @param  {Function} callback Callback to be trigger on response.
          */
         function getPositionInformation(callback) {
-            _postMessageCallback = callback;
             _postMessage({
                 type:'get-position'
-            });
+            }, callback);
+        }
+
+        /**
+         * Get parent window location information.
+         * @param {Function} callback Callback to be trigger on response.
+         */
+        function getLocation(callback) {
+            _postMessage({
+                type: 'get-location'
+            }, callback);
         }
 
 
@@ -300,6 +323,7 @@
             navigate: navigate,
             enableAutoResize: enableAutoResize,
             scrollTo: scrollTo,
+            getLocation: getLocation,
             getAbsoluteHeight: _getAbsoluteHeight,
             getPositionInformation: getPositionInformation
         };
