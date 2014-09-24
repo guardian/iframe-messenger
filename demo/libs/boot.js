@@ -5,8 +5,7 @@ define([], function () {
             var iframe;
             var link = el.querySelector('a[href]');
 
-            function _postMessage(message, id) {
-                message.id = id;
+            function _postMessage(message) {
                 iframe.contentWindow.postMessage(JSON.stringify(message), '*');
             }
 
@@ -39,6 +38,8 @@ define([], function () {
                             break;
                         case 'get-location':
                             _postMessage({
+                                'id':       message.id,
+                                'type':     message.type,
                                 'hash':     window.location.hash,
                                 'host':     window.location.host,
                                 'hostname': window.location.hostname,
@@ -52,11 +53,13 @@ define([], function () {
                             break;
                         case 'get-position':
                             _postMessage({
+                                'id':           message.id,
+                                'type':         message.type,
                                 'iframeTop':    iframe.getBoundingClientRect().top,
                                 'innerHeight':  window.innerHeight,
                                 'innerWidth':   window.innerWidth,
                                 'pageYOffset':  window.pageYOffset
-                            }, message.id);
+                            });
                             break;
                         default:
                            console.error('Received unknown action from iframe: ', message);

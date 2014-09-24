@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.5
+ * version: 0.2.6
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
@@ -15,12 +15,16 @@
         var MSG_ID_PREFIX = 'iframeMessenger';
         var _postMessageCallbacks = {};
         var _currentHeight = 0;
-        var _bodyMargin = 0;
         var _images = [];
         var _options = {
             absoluteHeight: false
         };
 
+        /**
+         * Send message to parent page and store callback ref if needed.
+         * @param {oject} message Message to send to parent page.
+         * @param {function} callback (optional) Func. to call upon return msg.
+         */
         function _postMessage(message, callback) {
             var id = genID();
             message.id = id;
@@ -102,8 +106,18 @@
          * @return {int} Height integer
          */
         function _getHeight() {
-            var height = document.defaultView.getComputedStyle(document.body).height;
-            return parseInt(height, 10) + _bodyMargin;
+            var htmlEl = document.querySelector('html');
+            var htmlHeight = htmlEl.getBoundingClientRect().height;
+            var bodyScrollHeight = document.body.scrollHeight;
+            var docScrollHeight = document.documentElement.scrollHeight;
+            var docHeight = document.documentElement.clientHeight;
+            var maxHeight = Math.max(
+                htmlHeight, 
+                bodyScrollHeight, 
+                docScrollHeight,
+                docHeight
+            );
+            return parseInt(maxHeight, 10);
         }
 
         /**
@@ -258,8 +272,6 @@
                 return;
             }
 
-            var styles = getComputedStyle(document.body);
-            _bodyMargin = parseInt(styles.marginTop, 10) + parseInt(styles.marginBottom, 10);
             document.documentElement.style.height = 'auto';
             document.body.style.height = 'auto';
 

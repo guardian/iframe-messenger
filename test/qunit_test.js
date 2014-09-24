@@ -9,8 +9,8 @@ asyncTest("resize() with specific option", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
-		equal(data['type'], 'set-height', 'should send set-height type.');
-		equal(data['value'], '900', 'should send value of 900.');
+		equal(data.type, 'set-height', 'should send set-height type.');
+		equal(data.value, '900', 'should send value of 900.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -24,11 +24,10 @@ asyncTest("resize() with specific option", function() {
 
 asyncTest("resize() with no option", function() {
 	window.addEventListener('message', function(event) {
-		console.log(event.data);
 		var data = JSON.parse(event.data);
 		expect(2);
-		equal(data['type'], 'set-height', 'should send set-height type.');
-		equal(data['value'], '444', 'should send value of 444.');
+		equal(data.type, 'set-height', 'should send set-height type.');
+		equal(data.value, '444', 'should send value of 444.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -44,8 +43,8 @@ asyncTest("enableAutoResize with no doctype", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
-		equal(data['type'], 'set-height', 'should send set-height type.');
-		equal(data['value'], '500', 'should send value of 500.');
+		equal(data.type, 'set-height', 'should send set-height type.');
+		equal(data.value, '500', 'should send value of 500.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -63,8 +62,8 @@ asyncTest("enableAutoResize with absoluteHeight set", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
-		equal(data['type'], 'set-height', 'should send set-height type.');
-		equal(data['value'], '500', 'should have 500px height.');
+		equal(data.type, 'set-height', 'should send set-height type.');
+		equal(data.value, '500', 'should have 500px height.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -80,8 +79,8 @@ asyncTest("enableAutoResize with css transforms set", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
-		equal(data['type'], 'set-height', 'should send set-height type.');
-		equal(data['value'], '600', 'should have 500px height.');
+		equal(data.type, 'set-height', 'should send set-height type.');
+		equal(data.value, '600', 'should have 500px height.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -99,8 +98,8 @@ asyncTest("enableAutoResize with absoluteHeight set and no doctype", function() 
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
-		equal(data['type'], 'set-height', 'should send set-height type.');
-		equal(data['value'], '500', 'should send value of 500.');
+		equal(data.type, 'set-height', 'should send set-height type.');
+		equal(data.value, '500', 'should send value of 500.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -117,8 +116,8 @@ asyncTest(".navigate()", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(2);
-		equal(data['type'], 'navigate', 'should send the navigate type.');
-		equal(data['value'], 'http://www.example.com/', 'should send correct string value.');
+		equal(data.type, 'navigate', 'should send the navigate type.');
+		equal(data.value, 'http://www.example.com/', 'should send correct string value.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -137,8 +136,8 @@ asyncTest("postMessage", function() {
 
 		if (event.source === iframe02.contentWindow) {
 			expect(2);
-			equal(data['type'], 'set-height', 'should should restrict to iframe source.');
-			equal(data['value'], '800', 'should send correct value.');
+			equal(data.type, 'set-height', 'should should restrict to iframe source.');
+			equal(data.value, '800', 'should send correct value.');
 
 			// Clear event listener
 			this.removeEventListener('message', arguments.callee, false);
@@ -163,9 +162,9 @@ asyncTest(".scrollTo()", function() {
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
 		expect(3);
-		equal(data['type'], 'scroll-to', 'should send the scroll-to action.');
-		equal(data['x'], 0, 'should send x position value.');
-		equal(data['y'], 200, 'should send x position value.');
+		equal(data.type, 'scroll-to', 'should send the scroll-to action.');
+		equal(data.x, 0, 'should send x position value.');
+		equal(data.y, 200, 'should send x position value.');
 
 		// Clear event listener
 		this.removeEventListener('message', arguments.callee, false);
@@ -184,12 +183,13 @@ asyncTest(".getPositionInformation()", function() {
 	// Receive first request post message for positional information
 	window.addEventListener('message', function(event) {
 		var data = JSON.parse(event.data);
-		equal(data['type'], 'get-position', 'should send the get-position action.');
+		equal(data.type, 'get-position', 'should send the get-position action.');
 
 		this.removeEventListener('message', arguments.callee, false);
 
         // Send mock response to test the callback is called.
         var message = {
+            'id': data.id,
             'iframeTop':    iframe.getBoundingClientRect().top,
             'innerHeight':  window.innerHeight,
             'pageYOffset':      window.pageYOffset

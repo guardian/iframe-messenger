@@ -28,10 +28,9 @@
             Test content
         </div>
     </div>
-
     <script>
-      iframeMessenger.resize();
-      console.log('loaded +++++++');
+        // quint was erroring is PhantomJS didn't have time to render CSS
+        setTimeout(iframeMessenger.resize, 100);
     </script>
 
 </body>
