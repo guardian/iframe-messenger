@@ -210,3 +210,61 @@ asyncTest(".getPositionInformation()", function() {
 	iframe.src = 'iframeContent/getPositionInformation.html';
 });
 
+
+asyncTest(".getLocation()", function() {
+	expect(2);
+
+    var jsonMsg;
+    var msg;
+    var data;
+
+	// Receive first request post message for positional information
+	window.addEventListener('message', function(event) {
+		data = JSON.parse(event.data);
+		equal(data.type, 'get-location', 'should send the get-location action.');
+
+		this.removeEventListener('message', arguments.callee, false);
+
+        // Send mock response to test the callback is called.
+        msg = {
+            'id':       data.id,
+            'type':     data.type,
+            'hash':     window.location.hash,
+            'host':     window.location.host,
+            'hostname': window.location.hostname,
+            'href':     window.location.href,
+            'origin':   window.location.origin,
+            'pathname': window.location.pathname,
+            'port':     window.location.port,
+            'protocol': window.location.protocol,
+            'search':   '?query=fake'
+        };
+        jsonMsg = JSON.stringify(msg);
+		iframe.contentWindow.postMessage(jsonMsg, '*');
+	});
+
+	// Listen for successful callback post message
+	window.addEventListener('message', function(event) {
+        if (event.data.id !== data.id) {
+            return;
+        }
+
+        var pass = true; 
+        for (var key in event.data) {
+            if (event.data.hasOwnProperty(key) && msg.hasOwnProperty(key)) {
+                if (event.data[key] !== msg[key]) {
+                    pass = false;
+                }
+            }
+        }
+
+        equal(pass, true , 'callback should execute receipt of position formation');
+        start();
+    });
+    
+    window.location.hash = 'marvin';
+
+	var iframe = document.querySelector("#qunit-fixture iframe");
+	iframe.src = 'iframeContent/getLocation.html';
+});
+
