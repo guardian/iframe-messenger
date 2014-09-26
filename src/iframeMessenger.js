@@ -108,15 +108,8 @@
         function _getHeight() {
             var htmlEl = document.querySelector('html');
             var htmlHeight = htmlEl.getBoundingClientRect().height;
-            var bodyScrollHeight = document.body.scrollHeight;
             var docScrollHeight = document.documentElement.scrollHeight;
-            var docHeight = document.documentElement.clientHeight;
-            var maxHeight = Math.max(
-                htmlHeight, 
-                bodyScrollHeight, 
-                docScrollHeight,
-                docHeight
-            );
+            var maxHeight = Math.max(htmlHeight, docScrollHeight);
             return parseInt(maxHeight, 10);
         }
 
@@ -216,11 +209,13 @@
                 try {
                     data = JSON.parse(event.data);
                 } catch(err) {
-                    console.error('Error parsing data. ' + err.toString());
+                    return console.error('Error parsing data. ' + err.toString());
                 }
 
                 // Check postmessage is exptected 
-                if (data.id && _postMessageCallbacks.hasOwnProperty(data.id)) {
+                if (data.hasOwnProperty('id') &&
+                    _postMessageCallbacks.hasOwnProperty(data.id))
+                {
                     // Run callback with data a clean up afterwards
                     _postMessageCallbacks[data.id](data);
                     delete _postMessageCallbacks[data.id];
