@@ -44,9 +44,10 @@ define([], function () {
                                 'host':     window.location.host,
                                 'hostname': window.location.hostname,
                                 'href':     window.location.href,
+                                'origin':   window.location.origin,
                                 'pathname': window.location.pathname,
-                                'protocol': window.location.protocol,
                                 'port':     window.location.port,
+                                'protocol': window.location.protocol,
                                 'search':   window.location.search
                             }, message.id);
                             break;

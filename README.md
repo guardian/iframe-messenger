@@ -71,8 +71,6 @@ of the current document is sent.
 Ask parent page for location information and executes callback passing
 along an object containing parent's `document.location` information.
 
-**NOTE:** Due to issues with Safari, the location.origin is not returned.
-
 Sample of returned location object:
 ```JavaScript
 {
@@ -80,6 +78,7 @@ Sample of returned location object:
     host: "example.com:8080",
     hostname: "exaple.com",
     href: "http://example.com:8080/test.html?query=test#myhash",
+    origin: "http://example.com:8080",
     pathname: "/test.html",
     port: "8080",
     protocol: "http:"

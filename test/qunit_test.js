@@ -236,6 +236,7 @@ asyncTest(".getLocation()", function() {
             'pathname': window.location.pathname,
             'port':     window.location.port,
             'protocol': window.location.protocol,
+            'origin':   window.location.origin,
             'search':   '?query=fake'
         };
         jsonMsg = JSON.stringify(msg);
