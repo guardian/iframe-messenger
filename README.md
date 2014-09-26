@@ -21,6 +21,18 @@ Auto-resize example:
 </script>
 ```
 
+Getting parent's URL hash fragment example:
+```html
+<script src="//interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
+<script>
+    function logParentHashFragment(locationObj) {
+        console.log(locationObj.hash);
+    }
+
+    iframeMessenger.getLocation(logParentHashFragment);
+</script>
+```
+
 Send all links to parent window example:
 ```html
 <script src="//interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
@@ -51,8 +63,31 @@ performance impact.
 
 #### `.resize(height)`
 (optional) `height` : INT or percentage eg '20%'
-Specify a height for the iframe wrapper. If no height is specifed the height
+Specify a height for the iframe wrapper. If no height is specified the height
 of the current document is sent.
+
+
+#### `.getLocation(callback)`
+Ask parent page for location information and executes callback passing
+along an object containing parent's `document.location` information.
+
+**NOTE:** Due to issues with Safari, the location.origin is not returned.
+
+Sample of returned location object:
+```JavaScript
+{
+    hash: "#myhash",
+    host: "example.com:8080",
+    hostname: "exaple.com",
+    href: "http://example.com:8080/test.html?query=test#myhash",
+    pathname: "/test.html",
+    port: "8080",
+    protocol: "http:"
+    search: "?query=test",
+    type: "get-location"            // for iframeMessenger usage
+    id: "iframeMessenger:ceprg"     // for iframeMessenger usage
+}
+```
 
 #### `.navigate(url)`
 Navigate parent window to specified URL (string)
@@ -82,6 +117,12 @@ Sample of returned position data object:
 
 
 ## Changelog
+0.2.6
+- Added .getLocation(callback) for retrieving parent location information
+- Added postMessage id to identify returning messages
+- Updated height calculation using max of several different readings
+- Fixed tests
+
 0.2.5
 - Listen for image load events and trigger resize
 - More sensible way for calculating height

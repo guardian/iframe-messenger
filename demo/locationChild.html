@@ -27,11 +27,11 @@ console.log(location);
         }
         // Check location
 		iframeMessenger.getLocation(checkLocation);
-		iframeMessenger.getPositionInformation(checkLocation);
+		//iframeMessenger.getPositionInformation(checkLocation);
         
         var btn = document.querySelector('#test');
         btn.addEventListener('click', function() {
-		    iframeMessenger.getPositionInformation(checkLocation);
+		    //iframeMessenger.getPositionInformation(checkLocation);
 		    iframeMessenger.getLocation(checkLocation);
         });
     </script>
