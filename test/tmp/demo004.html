@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>test</title>
+
+  <style>
+    body {
+        background: orange;
+    }
+
+   #test {
+        background: pink;
+        padding: 10px;
+        margin: 10px;
+    }
+
+    .transform-left,
+    .transform-right {
+      padding: 10px;
+      margin: 10px;
+      background: green;
+        transform: translate(0px, 100px);
+        -webkit-transform: translate(0px, 100px);
+        -moz-transform: translate(0px, 100px);
+        -o-transform: translate(0px, 100px);
+        -ms-transform: translate(0px, 100px);
+    }
+
+
+  </style>
+
+
+</head>
+<body>
+
+    <div class="float-left">Float left</div>
+    <div class="float-right">Float right</div>
+
+
+    <div id="test">
+      <p>Hello</p>
+    </div>
+
+    <div class="transform-left">Float left</div>
+    <div class="transform-right">Float right</div>
+
+    <script src="../../src/iframeMessenger.js"></script>
+    <script>
+        iframeMessenger.enableAutoResize( { absoluteHeight: true });
+    </script>
+</body>
+</html>

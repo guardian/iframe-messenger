@@ -17,6 +17,7 @@
   "homepage": "https://github.com/GuardianInteractive/iframe-messenger",
   "devDependencies": {
     "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "^0.10.0",
     "grunt-contrib-qunit": "~0.5.2"
   }
 }

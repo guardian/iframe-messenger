@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>test</title>
+
+  <style>
+    body {
+        background: orange;
+    }
+
+    #test {
+        background: pink;
+        padding: 50px;
+        margin: 50px;
+    }
+
+    #absolute-top-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: yellow;
+    }
+
+    #absolute-top-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: yellow;
+    }
+
+    #absolute-bottom-right {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background: yellow
+    }
+
+    #absolute-bottom-left {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: yellow
+    }
+
+
+  </style>
+
+
+</head>
+<body>
+
+    <div id="test"> Hello
+
+      <div id="absolute-top-left">Absolute top left</div>
+      <div id="absolute-top-right">Absolute top right</div>
+      <div id="absolute-bottom-right">Absolute bottom right</div>
+      <div id="absolute-bottom-left">Absolute bottom left</div>
+
+
+    </div>
+
+    <script src="../../src/iframeMessenger.js"></script>
+    <script>
+        iframeMessenger.enableAutoResize();
+    </script>
+</body>
+</html>

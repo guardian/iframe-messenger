@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<!-- saved from url=(0132)http://interactive.guim.co.uk/embed/2014/may/responsive-facewall-mini-master/index.html?1pasF_dlrkTmrjBBI2V1_rxq-fBsWdSP1VVDanuMejgk -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- CSS_START -->
+		<link rel="stylesheet" href="http://interactive.guim.co.uk/embed/2014/may/responsive-facewall-mini-master/css/local-fonts.css">
+
+		<style>
+
+		/* reset */
+
+
+	html, body {
+	padding: 0;
+	margin: 0;
+	text-align: center;
+}
+
+div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+	.unselectable {
+    /* For Opera and <= IE9, we need to add unselectable="on" attribute onto each element */
+    /* Check this site for more details: http://help.dottoro.com/lhwdpnva.php */
+    -moz-user-select: none; /* These user-select properties are inheritable, used to prevent text selection */
+    -webkit-user-select: none;
+    -ms-user-select: none; /* From IE10 only */
+    user-select: none; /* Not valid CSS yet, as of July 2012 */
+
+    -webkit-user-drag: none; /* Prevents dragging of images/divs etc */
+    user-drag: none;
+	}
+
+#placeholder {
+		position: absolute;
+		width: 0;
+		height: 0;
+	}
+
+#facewall-container {
+
+	width: 100%;
+	height: auto;
+	display: inline-block;
+}
+
+
+#fw-container {
+
+	position: relative;
+	width: 100%;
+	height: auto;
+    background-color: #fff;
+    color: #777777;
+    font-size: 1.3rem;
+    line-height: 2rem;
+    font-weight: normal;
+    overflow: hidden;
+}
+
+#fw-container a {
+	color: #005689;
+	text-decoration: none;
+}
+
+#fw-header {
+	position: relative;
+	width: 100%;
+	height: 100px;
+	text-align: left;
+}
+
+#fw-header h2 {
+	font-family: "Guardian Egyptian Headline", Georgia, serif;
+	font-weight: 500;
+	font-size: 25px;
+	padding: 10px 10px;
+	color: #fff;
+}
+
+#fw-header h3 {
+	font-family: "Guardian Agate Sans", Arial, sans-serif;
+	font-weight: 500;
+	font-size: 14px;
+	padding: 10px 10px;
+	float: right;
+	color: #fff;
+	display: none;
+}
+
+#fw-loading {
+	color: #fff;
+	padding: 10px 10px;
+}
+
+#fw-grid {
+	margin-top: 20px;
+	position: relative;
+	width: 100%;
+	height: auto;
+	padding:0;
+	overflow: hidden;
+	list-style-type: none;
+	text-align:center;
+}
+
+.fw-cell {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	bottom: 0px;
+	right: 0px;
+}
+
+.fw-cell-image {
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	width: 100%;
+}
+
+.fw-cell-num {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 27px;
+	height: 17px;
+	font-size: 15px;
+	padding: 6px 0px 3px 0px;
+	text-align: center;
+	/*font-family: "Guardian Agate Sans", Arial, sans-serif;*/
+	font-family: "Guardian Egyptian Headline", Georgia, serif;
+	font-weight: 500;
+	color: #fff;
+}
+
+#fw-grid .fw-cell-wrapper {
+	position: relative;
+	display: inline-block;
+	width: 48%;
+	padding-bottom: 48%;
+	font-size: 1em;
+	background:#fff;
+	margin-left: auto;
+	margin-right:4%;
+	margin-bottom:4%;
+	cursor: pointer;
+	background: #333;
+	vertical-align: top;
+}
+
+#fw-grid .fw-cell-wrapper:not(.fw-expanded):hover img {
+	opacity:0.6;
+	filter:alpha(opacity=60); /* For IE8 and earlier */
+}
+
+#fw-grid .fw-cell-wrapper:nth-of-type(even) {
+	margin-right: auto;
+}
+
+#fw-grid .fw-cell-wrapper.fw-expanded > .fw-cell::after {
+	bottom: 0;
+	border: solid transparent;
+	content: " ";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-bottom-color: #ddd;
+	border-width: 30px;
+	left: 50%;
+	margin: 0 0 -18% -30px;
+}
+
+
+#fw-info-panel {
+	position: static;
+	width: 100%;
+	color: #fff;
+	height: 0;
+	background: #ddd;
+	overflow: hidden;
+	opacity:0;
+	filter:alpha(opacity=0); /* For IE8 and earlier */
+
+}
+
+#fw-info-dummy {
+	position: static;
+	width: 100%;
+	color: #fff;
+	height: 0;
+	background: #eee;
+	overflow: hidden;
+	opacity:0;
+	filter:alpha(opacity=0); /* For IE8 and earlier */
+
+}
+
+#fw-info-panel-inner {
+	position: relative;
+	width: 100%;
+	height: auto;
+}
+
+#fw-close-button {
+	position: absolute;
+	width: 27px;
+	height: 27px;
+	top: 20px;
+	right: 25px;
+	cursor:pointer;
+	background-image: url("images/close_333_20.png")
+}
+
+.fw-nav-button {
+	position: absolute;
+	top: 20px;
+	cursor:pointer;
+	width: 27px;
+	height: 27px;
+	cursor: pointer;
+}
+
+.fw-nav-button:hover {
+	opacity:0.7;
+	filter:alpha(opacity=70); /* For IE8 and earlier */
+}
+
+#fw-nav-left {
+	left: 20px;
+	background-image: url("images/left_arrow_65_square.png");
+}
+
+#fw-nav-right {
+	left: 75px;
+	background-image: url("images/right_arrow_65_square.png");
+}
+
+#fw-info-contents {
+	position: relative;
+	width: 100%;
+	height: auto;
+	text-align: left;
+}
+
+#fw-info-heading {
+	font-family: "Guardian Egyptian Headline", Georgia, serif;
+	font-weight: normal;
+	font-size: 30px;
+	color:#951c55;
+	margin: 0 20px 5px 20px;
+}
+
+#fw-info-subheading {
+	font-family: "Guardian Egyptian Headline", Georgia, serif;
+	font-weight: 500;
+	font-size: 18px;
+	padding-top: 5px;
+	color: #333;
+	margin: 0 20px 0 20px;
+}
+
+#fw-info-description {
+	font-family: "Guardian Egyptian Headline", Georgia, serif;
+	font-weight: normal;
+	font-size: 1em;
+	line-height: 1.2em;
+	text-align: left;
+	margin: 0 20px 0 20px;
+	color: #666;
+	display: block;
+	max-width: 500px;
+	padding: 20px 0 20px 0;
+}
+
+#fw-info-main-image-container {
+	position: relative;
+	padding-top: 65px;
+	width: 100%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+#fw-info-main-image-container-heading {
+	position: absolute;
+	top: 65px;
+	left: 0;
+	width: 100%;
+	padding: 10px 0;
+	display: none;
+	vertical-align: top;
+	font-family: "Guardian Egyptian Headline", Georgia, serif;
+	color: #666;
+	background: #ddd;
+	font-weight: normal;
+	font-size: 14px;
+	border-top: 1px solid #999;
+	text-align: center;
+}
+
+#fw-info-text-container {
+	width: 100%;
+	display: inline-block;
+	padding-top: 20px;
+}
+
+.fw-info-main-image {
+	padding-top: 0;
+	width: 100%;
+	-ms-transform: scale(0.1,0.1); /* IE 9 */
+-webkit-transform: scale(0.1,0.1); /* Chrome, Safari, Opera */
+transform: scale(0.1,0.1);
+opacity:0;
+filter:alpha(opacity=0); /* For IE8 and earlier */
+}
+
+#fw-close-button:hover {
+	opacity:0.7;
+	filter:alpha(opacity=70); /* For IE8 and earlier */
+}
+
+.fw-close-link {
+	display: inline-block;
+	font-family: "Guardian Agate Sans", Arial, sans-serif;
+	color: #005689;
+	width: 27px;
+	height: 27px;
+	cursor: pointer;
+	background-image: url("images/up_arrow_65_square.png");
+	margin-bottom: 20px;
+}
+
+.fw-close-link:hover {
+	opacity:0.7;
+	filter:alpha(opacity=70); /* For IE8 and earlier */
+}
+
+
+#fw-info-shirts .fw-info-shirt-image:nth-of-type(even) {
+	margin-left: 4%;
+}
+
+#fw-info-shirts .fw-info-year {
+
+	font-family: "Guardian Egyptian Headline", Georgia, serif;
+	font-weight: 500;
+	font-size: 20px;
+	color:#10793d;
+	position: absolute;
+	top: 42%;
+	width: 100%;
+	display: block;
+	text-align: center;
+}
+
+#fw-info-shirts .fw-info-host {
+
+	font-family: "Guardian Agate Sans", Arial, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+}
+
+#fw-info-shirts .fw-info-progress {
+
+	font-family: "Guardian Agate Sans", Arial, sans-serif;
+	font-weight: normal;
+	font-size: 14px;
+}
+
+.fw-info-shirt-image {
+	display: inline-block;
+	width: 45%;
+}
+
+.fw-transition {
+	transition: all 0.3s;
+    -moz-transition: all 0.3s; /* Firefox 4 */
+    -webkit-transition: all 0.3s; /* Safari and Chrome */
+    -o-transition: all 0.3s; /* Opera */
+}
+
+.fw-transition-quick {
+	transition: all 0.2s;
+    -moz-transition: all 0.2s; /* Firefox 4 */
+    -webkit-transition: all 0.2s; /* Safari and Chrome */
+    -o-transition: all 0.2s; /* Opera */
+}
+
+.shrink {
+-ms-transform: scale(0.1,0.1); /* IE 9 */
+-webkit-transform: scale(0.1,0.1); /* Chrome, Safari, Opera */
+transform: scale(0.1,0.1);
+opacity:0;
+filter:alpha(opacity=0); /* For IE8 and earlier */
+}
+
+.grow {
+-ms-transform: scale(1,1); /* IE 9 */
+-webkit-transform: scale(1,1); /* Chrome, Safari, Opera */
+transform: scale(1,1);
+opacity:1;
+filter:alpha(opacity=100); /* For IE8 and earlier */
+}
+
+/*
+THIS FOR THREE IN ROW -------------------------------------------------------------------------------------------------------------------------
+*/
+
+@media screen and (min-width: 300px) {
+	#fw-grid .fw-cell-wrapper {
+		width: 32%;
+		padding-bottom: 32%;
+		margin-right:2%;
+		margin-bottom:2%;
+	}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(even) {
+		margin-right:2%;
+	}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(3n) {
+		margin-right: auto;
+	}
+
+	#fw-grid .fw-cell-wrapper.fw-expanded > .fw-cell::after {
+	margin-bottom: -17%;
+	}
+
+}
+
+
+/*
+THIS FOR FOUR IN ROW -------------------------------------------------------------------------------------------------------------------------
+*/
+@media screen and (min-width: 400px) {
+
+	#fw-grid .fw-cell-wrapper {
+		width: 24%;
+		padding-bottom: 24%;
+		margin-right:1.333333333333%;
+		margin-bottom:1.333333333333%;
+	}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(even),
+	#fw-grid .fw-cell-wrapper:nth-of-type(3n) {
+		margin-right:1.333333333333%;
+	}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(4n) {
+		margin-right: auto;
+	}
+
+	#fw-grid .fw-cell-wrapper.fw-expanded > .fw-cell::after {
+	margin-bottom: -16%;
+	}
+
+	#fw-header h3 {
+	color: #fff;
+	display: inline;
+}
+
+
+}
+
+
+/*
+THIS FOR FIVE IN ROW -------------------------------------------------------------------------------------------------------------------------
+*/
+@media screen and (min-width: 550px) {
+
+	#fw-info-main-image-container-heading {
+		display: none;
+	}
+
+	#fw-grid .fw-cell-wrapper {
+		width: 19%;
+		padding-bottom: 19%;
+		margin-right:1.25%;
+		margin-bottom:1.25%;
+}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(even),
+	#fw-grid .fw-cell-wrapper:nth-of-type(3n) {
+		margin-right:1.25%;
+}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(5n) {
+		margin-right: auto;
+}
+
+#fw-grid .fw-cell-wrapper.fw-expanded > .fw-cell::after {
+	margin-bottom: -15%;
+	}
+
+	#fw-info-main-image-container {
+		width: 45%;
+		padding-left: 0;
+	}
+
+	#fw-info-text-container {
+	width: 55%;
+	padding-top: 65px;
+	}
+
+
+		#fw-info-heading {
+	margin: 0 40px 0 40px;
+}
+
+#fw-info-subheading {
+
+	margin: 0 40px 0 40px;
+}
+
+	#fw-info-description {
+	margin: 0 40px 0 40px;
+}
+
+.fw-info-main-image {
+		margin-right: 0;
+		padding-top: 0;
+	}
+
+
+}
+
+
+
+/*
+THIS FOR TEN IN ROW -------------------------------------------------------------------------------------------------------------------------
+*/
+
+@media screen and (min-width: 900px) {
+
+	#fw-grid .fw-cell-wrapper {
+		width: 19%;
+		padding-bottom: 19%;
+		margin-right:1.25%;
+		margin-bottom:1.25%;
+}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(even),
+	#fw-grid .fw-cell-wrapper:nth-of-type(3n) {
+		margin-right:1.25%;
+}
+
+	#fw-grid .fw-cell-wrapper:nth-of-type(5n) {
+		margin-right: auto;
+}
+
+#fw-grid .fw-cell-wrapper.fw-expanded > .fw-cell::after {
+	margin-bottom: -15%;
+	}
+
+	#fw-info-main-image-container {
+		margin-left: 7%;
+	}
+
+	#fw-info-text-container {
+	width: 50%;
+	}
+	#fw-info-main-image-container {
+		margin-left: 6%;
+		width: 39%;
+	}
+
+}
+
+		</style>
+
+		<!-- CSS_END -->
+		<!-- JS_START -->
+		<script src="./wall_files/jquery-1.10.1.min.js" type="text/javascript"></script>
+		<script src="./wall_files/TweenMax.min.js" type="text/javascript"></script>
+		<script src="../../src/iframeMessenger.js" type="text/javascript"></script>
+		<!--<script src="http://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js" type="text/javascript"></script>-->
+		<!-- JS_END -->
+
+		<title>Responsive facewall master</title>
+
+	</head>
+	<body>
+		<img id="placeholder" src="./wall_files/placeholder.png" alt="">
+		<div id="facewall-container" class="unselectable" unselectable="on" draggable="false"><div id="fw-container" draggable="false" unselectable="on"><div id="fw-header" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);"><h2 draggable="false" unselectable="on">"I want my country to be one worthy of children"</h2><h3 draggable="false" unselectable="on">Click on the images for more information ...</h3><div id="fw-loading" draggable="false" unselectable="on" style="display: none;">Loading...</div></div></div><ul id="fw-grid" draggable="false" unselectable="on"><li class="fw-cell-wrapper" id="fw-cell-wrapper_0" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_0" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-Rights-interac-004.jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">1</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_1" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_1" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005.jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">2</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_2" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_2" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-Rights-interac-004(1).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">3</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_3" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_3" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005(1).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">4</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_4" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_4" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-Rights-interac-004(2).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">5</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_5" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_5" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005(2).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">6</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_6" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_6" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-Rights-interac-004(3).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">7</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_7" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_7" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-Rights-interac-004(4).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">8</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_8" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_8" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005(3).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">9</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_9" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_9" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005(4).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">10</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_10" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_10" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005(5).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">11</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_11" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_11" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005(6).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">12</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_12" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_12" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-Rights-interac-004(5).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">13</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_13" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_13" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-rights-interac-005(7).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">14</p></div></li><li class="fw-cell-wrapper" id="fw-cell-wrapper_14" draggable="false" unselectable="on"><div class="fw-cell" id="fw-cell_14" draggable="false" unselectable="on"><img class="fw-cell-image" src="./wall_files/MDG--Child-Rights-interac-004(6).jpg" alt="" draggable="false" unselectable="on"><p class="fw-cell-num" draggable="false" unselectable="on" style="color: rgb(255, 255, 255); background-color: rgb(80, 120, 146);">15</p></div></li><div id="fw-info-panel" draggable="false" unselectable="on"><div id="fw-info-panel-inner" draggable="false" unselectable="on"><div id="fw-info-contents" draggable="false" unselectable="on"></div><div id="fw-close-button" draggable="false" unselectable="on"></div><div class="fw-nav-button" id="fw-nav-left" draggable="false" unselectable="on"></div><div class="fw-nav-button" id="fw-nav-right" draggable="false" unselectable="on"></div><div class="fw-close-link" draggable="false" unselectable="on"></div></div></div><div id="fw-info-dummy" draggable="false" unselectable="on"></div></ul></div>
+
+		<script>
+
+
+		$(function() {
+
+		if(!Array.indexOf) {// IE fix
+		Array.prototype.indexOf = function(obj) {
+			for(var i = 0; i < this.length; i++) {
+				if(this[i] === obj) {
+					return i;
+				}
+			}
+			return -1;
+		}
+	}
+
+	var dataset;
+
+	var element = document.getElementById("facewall-container"), $element = $(element);
+
+	var currentPosition, currentIndex, lastIndex = -1, firstTime = true, canResize = false, currentWidth, panelOpen, throttleTimer;
+
+	var makeUnselectable = function( $target ) {
+    $target
+        .addClass( 'unselectable' ) // All these attributes are inheritable
+        .attr( 'unselectable', 'on' ) // For IE9 - This property is not inherited, needs to be placed onto everything
+        .attr( 'draggable', 'false' ) // For moz and webkit, although Firefox 16 ignores this when -moz-user-select: none; is set, it's like these properties are mutually exclusive, seems to be a bug.
+        .on( 'dragstart', function() { return false; } );  // Needed since Firefox 16 seems to ingore the 'draggable' attribute we just applied above when '-moz-user-select: none' is applied to the CSS
+
+    $target // Apply non-inheritable properties to the child elements
+        .find( '*' )
+        .attr( 'draggable', 'false' )
+        .attr( 'unselectable', 'on' );
+};
+
+		iframeMessenger.enableAutoResize();
+
+		var links = document.querySelectorAll('a');
+
+    		for(var i = 0; i < links.length; i++) {
+        		links[i].addEventListener('click', function(event) {
+            		event.preventDefault();
+            		iframeMessenger.navigate(this.href);
+        		}, false);
+    	}
+
+		init();
+
+
+
+function init() {
+
+	"use strict";
+
+		var htmlString = "<div id='fw-container'><div id='fw-header'><h2></h2><h3></h3><div id='fw-loading'>Loading...</div></div></div><ul id='fw-grid'></ul>";
+
+	$(element).html(htmlString);
+
+	//var key = "0AhDtwXOtiI5edFJlNU05Ylh6eHR0RkhZQ19VTnI3NUE";
+
+	var key = window.location.search.slice(1);
+
+
+
+				var url;
+
+				try {
+
+					 url = "http://interactive.guim.co.uk/spreadsheetdata/" + key + ".json";
+
+        				$.getJSON ( url, function( data ) {
+
+          				handleResponse(data);
+
+        			});
+
+					} catch (e) {
+
+						url = "http://interactive.guim.co.uk/spreadsheetdata/" + key + ".jsonp";
+
+				$.ajax({
+					type:'get',
+					dataType:'jsonp',
+					url: url,
+					jsonpCallback: 'gsS3Callback',
+					cache: true
+				});
+
+			}
+
+	window.gsS3Callback = handleResponse;
+
+};
+
+
+function handleResponse(data) {
+
+	//console.log(data.sheets.Sheet1)
+
+	dataset = data.sheets.Sheet1;
+
+	$("#fw-header").css({ "background-color": dataset[0].accentcolour, "color": dataset[0].reversetextcolour });
+	$("#fw-header h2").html(dataset[0].facewalltitle);
+	$("#fw-header h3").html("Click on the images for more information ...");
+
+	buildView();
+
+	addListeners();
+
+	$("#fw-loading").hide();
+
+}
+
+
+
+function arrayObjectIndexOf(myArray, searchTerm, property) {
+		for (var i = 0, len = myArray.length; i < len; i++) {
+			if (myArray[i][property] === searchTerm)
+				return i;
+		}
+		return -1;
+}
+
+
+function buildView() {
+
+		var i, data = dataset, imgURL, thumbURL, htmlString = "", totalCells = data.length;
+
+
+			for (i = 0; i < totalCells; i++) {
+
+				thumbURL = data[i]["thumbimageurl"];
+
+					htmlString += "<li class='fw-cell-wrapper' id='fw-cell-wrapper_" + i + "'><div class='fw-cell' id='fw-cell_" + i + "'><img class='fw-cell-image' src='" + thumbURL + "' alt='' /><p class='fw-cell-num' >" + (i+1) + "</p></div></li>";
+
+			}
+
+			htmlString += "<div id='fw-info-panel'><div id='fw-info-panel-inner'><div id='fw-info-contents'></div><div id='fw-close-button'></div><div class='fw-nav-button' id='fw-nav-left'></div><div class='fw-nav-button' id='fw-nav-right'></div><div class ='fw-close-link' ></div></div></div>";
+			htmlString += "<div id='fw-info-dummy'></div>";
+
+			$("#fw-grid").html(htmlString);
+
+			$(".fw-cell-num").css({ "background-color": dataset[0].accentcolour, "color": dataset[0].reversetextcolour });
+
+			//resetHtml = htmlString;
+
+			if (data[0].displaynumbers == "N") {
+
+				$(".fw-cell-num").hide();
+			}
+
+			updateCellOffsets();
+
+			currentWidth = $(element).width();
+
+			$(window).on("resize", throttle);
+
+			TweenMax.delayedCall(0.1, checkWidth);
+
+			makeUnselectable($(element));
+
+
+}
+
+function checkWidth() {
+
+	var w = $element.width();
+
+	if (w != currentWidth) {
+		canResize = true;
+	} else {
+		canResize = false;
+	}
+
+	currentWidth = w;
+
+	TweenMax.delayedCall(0.1, checkWidth);
+}
+
+throttle = function() {
+
+	forceIframeResize();
+
+	if (canResize) {
+
+	var numCells = dataset.length;
+	var popup = $('#fw-info-panel').hide();
+	var dummy = $('#fw-info-dummy').hide();
+
+	popup.insertAfter( "#fw-cell-wrapper_" + (numCells-1) );
+	dummy.insertAfter('#fw-info-panel' );
+
+	$("#fw-grid li").removeClass("fw-expanded");
+	panelOpen = false;
+	lastIndex = -1;
+
+			window.clearTimeout(throttleTimer);
+			throttleTimer = window.setTimeout(function() {
+
+				//$("#fw-grid").html(resetHtml);
+				//addListeners();
+				//var h = $(_element).innerHeight();
+
+			//iframeMessenger.resize(h);
+				updateCellOffsets();
+
+			}, 200);
+
+	}
+}
+
+updateCellOffsets = function() {
+			$(".fw-cell-wrapper").each( function() {
+        	var item = $( this );
+        	item.data( 'offsetTop', item.offset().top );
+    		} );
+}
+
+
+addListeners = function() {
+
+		$(".fw-cell").bind("click", function(e) {
+
+			var id = e.currentTarget.id;
+			var splitArr = id.split("_");
+			var index = Number(splitArr[splitArr.length-1]);
+
+			currentIndex = index;
+
+			movePopup(index);
+
+		});
+
+		$("#fw-close-button").bind("click", function(e) {
+
+			$("#fw-grid li").removeClass("fw-expanded");
+
+			closePanel();
+
+		});
+
+		$(".fw-close-link").bind("click", function(e) {
+
+			var cell = $("#fw-cell-wrapper_" + lastIndex);
+
+			iframeMessenger.getPositionInformation(scrollPage);
+
+		});
+
+		$("#fw-nav-left").bind("click", function(e) {
+
+			currentIndex--;
+
+			if (currentIndex < 0) {
+				currentIndex = dataset.length - 1;
+			}
+
+			movePopup(currentIndex);
+
+		});
+
+		$("#fw-nav-right").bind("click", function(e) {
+
+			currentIndex++;
+
+			if (currentIndex >= dataset.length) {
+				currentIndex = 0;
+			}
+
+			movePopup(currentIndex);
+
+		});
+
+}
+
+movePopup = function(index) {
+
+	$("#fw-grid li").removeClass("fw-expanded");
+
+	var cell = $("#fw-cell-wrapper_" + index).addClass("fw-expanded");
+
+			var popupIndex = getPopupIndex(cell, index);
+
+			if (popupIndex >= dataset.length) {
+				popupIndex = dataset.length - 1;
+			}
+
+			var transHeight = $('#fw-info-panel-inner').height();
+
+
+
+
+			if (popupIndex != -1) {
+
+			var popup = $('#fw-info-panel');
+			var dummy = $('#fw-info-dummy');
+
+			dummy.show().removeClass("fw-transition").css({height: transHeight, opacity: 1, margin: "10px 0 15px 0" });
+			popup.show().removeClass("fw-transition").css({height: 0, opacity: 0, margin: "0"});
+
+			dummy.insertAfter('#fw-info-panel');
+			popup.insertAfter( "#fw-cell-wrapper_" + popupIndex );
+
+			currentPosition = cell.data( 'offsetTop' );
+
+			iframeMessenger.getPositionInformation(scrollPage)
+
+		}
+
+		updatePanel(index);
+
+		if (currentWidth > 600) {
+
+		$('#main-image').removeClass("fw-transition-quick grow");
+
+		}
+
+		var w = $('#fw-info-main-image-container').width();
+		//console.log(w)
+		$('#main-image-wrapper').height(w*1.3333);
+
+		openPanel(index);
+
+
+}
+
+function scrollPage(d) {
+
+	var scrollTo = d.pageYOffset + d.iframeTop + currentPosition;
+	iframeMessenger.scrollTo(0, scrollTo);
+}
+
+function updatePanel(index) {
+
+		var i, children, htmlString, mainImage, numString = "";
+
+		mainImage = dataset[index].mainimageurl;
+
+		if (dataset[0].displaynumbers == "Y") {
+
+				numString = (index +1) + ". ";
+		}
+
+
+		htmlString = "<div id='fw-info-main-image-container'><div id='main-image-wrapper'><img id='main-image' class='fw-info-main-image grow' src='" + mainImage + "' alt='' /></div><h5 id='fw-info-main-image-container-heading'>" + dataset[index].heading + "</h5></div>";
+		htmlString += "<div id='fw-info-text-container'>";
+		htmlString += "<h2 id='fw-info-heading' >" + numString + dataset[index].heading + "</h2>";
+		htmlString += "<h3 id='fw-info-subheading' >" + dataset[index].subheading1 + "</h3>";
+		htmlString += "<h3 id='fw-info-subheading' >" + dataset[index].subheading2 + "</h3>";
+
+			htmlString += "<p id='fw-info-description' >" + dataset[index].description + "</p>";
+
+			htmlString += "</div>";
+
+
+		$('#fw-info-contents').html(htmlString);
+
+		//$("#fw-info-main-image-container-heading").css({ "background-color": dataset[0].accentcolour, "color": dataset[0].reversetextcolour });
+
+
+	}
+
+	function openPanel(index) {
+
+		var transHeight = $('#fw-info-panel-inner').height();
+
+		//$("#main-image").attr("src", dataset[index].mainimageurl);
+
+		$('#fw-info-panel').show().addClass("fw-transition").css({height: transHeight, opacity: 1, margin: "10px 0 15px 0" });
+
+		$('#fw-info-dummy').show().addClass("fw-transition").css({height: 0, opacity: 0, margin: "0"});
+
+		$('#main-image').addClass("fw-transition-quick grow");
+
+
+		panelOpen = true;
+
+		TweenMax.delayedCall(0.5, forceIframeResize);
+
+	}
+
+	function forceIframeResize() {
+
+		var h = $(element).innerHeight();
+		iframeMessenger.resize(h);
+
+	}
+
+	function closePanel() {
+
+		var transHeight = 0;
+
+		$('#fw-info-panel').css({height: transHeight, opacity: 0, margin: "0" });
+
+		panelOpen = false;
+		lastIndex = -1;
+
+		TweenMax.delayedCall(0.5, forceIframeResize);
+
+	}
+
+	getPopupIndex = function (cell, index) {
+
+		var newIndex, parentWidth = $("#fw-grid").width(), cellWidth = $(cell).width(), cellMargin = Number($(cell).css('marginBottom').replace("px", "")); //$(cell).outerHeight(true) - cellWidth; //parseInt($(cell).css('marginBottom'))
+
+		var cellsInRow = Math.ceil(parentWidth / (cellWidth + cellMargin));
+
+		newIndex = (Math.ceil((index + 1) / cellsInRow) * cellsInRow) -1;
+
+		if (newIndex == lastIndex) {
+
+			newIndex = -1;
+
+		} else {
+
+			lastIndex = newIndex;
+		}
+
+		return newIndex;
+	}
+
+	});
+
+		</script>
+
+
+</body></html>

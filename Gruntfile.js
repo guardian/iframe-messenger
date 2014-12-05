@@ -1,15 +1,26 @@
 module.exports = function(grunt) {
 
-  // Project configuration.
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
-    qunit: {
-      all: ['test/*.html']
-    }
-  });
+    // Project configuration.
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
 
-  // Load the plugin that provides the "uglify" task.
-  grunt.loadNpmTasks('grunt-contrib-qunit');
+        qunit: {
+          all: ['test/*.html']
+        },
 
-  grunt.registerTask('test', ['qunit']);
+        jshint: {
+            options: {
+                jshintrc: './.jshintrc'
+            },
+            all: ['./Gruntfile.js', './src/iframeMessenger.js']
+        }
+
+
+    });
+
+    // Load the plugin that provides the "uglify" task.
+    grunt.loadNpmTasks('grunt-contrib-qunit');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+
+    grunt.registerTask('test', ['jshint', 'qunit']);
 };

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>test</title>
+
+  <style>
+    body {
+        background: orange;
+    }
+
+   #test {
+        background: pink;
+        padding: 50px;
+        margin: 50px;
+    }
+
+    .float-left {
+      float: left;
+      padding: 10px;
+      margin: 20px;
+      background: green;
+    }
+
+    .float-right {
+      float: right;
+      padding: 10px;
+      margin: 20px;
+      background: yellow;
+    }
+
+
+  </style>
+
+
+</head>
+<body>
+
+    <div class="float-left">Float left</div>
+    <div class="float-right">Float right</div>
+
+
+    <div id="test">
+      <p>Hello</p>
+    </div>
+
+    <div class="float-left">Float left</div>
+    <div class="float-right">Float right</div>
+
+    <script src="../../src/iframeMessenger.js"></script>
+    <script>
+        iframeMessenger.enableAutoResize();
+
+    </script>
+</body>
+</html>

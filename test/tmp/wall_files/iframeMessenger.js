@@ -10,13 +10,11 @@
     'use strict';
 
     var iframeMessenger = (function() {
-        var MutationObserver =  window.MutationObserver ||
-                                window.WebKitMutationObserver ||
-                                window.MozMutationObserver;
+        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
         var REFRESH_DELAY = 200;
         var MSG_ID_PREFIX = 'iframeMessenger';
         var _postMessageCallbacks = {};
-        var _currentHeight;
+        var _currentHeight = 0;
         var _images = [];
         var _options = {
             absoluteHeight: false
@@ -59,33 +57,6 @@
             } catch (e) {
                 return true;
             }
-        }
-
-        /**
-         * Fix body margin and floats.
-         */
-        function fixBodyHeight() {
-            var css = 'body::before, body::after{';
-            css += 'content: ".";';
-            css += 'height: 0;';
-            css += 'margin: 0;';
-            css += 'overflow: hidden;';
-            css += 'visibility: hidden;';
-            css += 'display: block;';
-            css += 'clear: both;';
-            css += '}';
-            css += 'body{';
-            css += 'margin: 0 !important;';
-            css += 'display: inline-block !important;';
-            css += 'float: left !important;';
-            css += 'width: 100% !important;';
-            css += 'box-sizing: border-box !important;';
-            css += '}';
-            
-            var head = document.querySelector('head');
-            var styleEl = document.createElement('style');
-            styleEl.appendChild(document.createTextNode(css));
-            head.appendChild(styleEl);
         }
 
 
@@ -135,7 +106,12 @@
          * @return {int} Height integer
          */
         function _getHeight() {
-            return parseInt(document.body.offsetHeight, 10);
+            var htmlEl = document.querySelector('html');
+            var htmlHeight = htmlEl.getBoundingClientRect().height;
+            //var docScrollHeight = document.documentElement.scrollHeight;
+            var bodyOffset =  document.body.offsetHeight;
+            var maxHeight = Math.max(htmlHeight, bodyOffset);
+            return parseInt(maxHeight, 10);
         }
 
         /**
@@ -152,38 +128,20 @@
         function _getAbsoluteHeight() {
             var allElements = document.querySelectorAll('body *');
             var maxBottomVal = 0;
-
-            Array.prototype.forEach.call(allElements, function(el) {
-                var styles = window.getComputedStyle(el);
-                var marginBottom = 0;
-                if (styles.marginBottom &&
-                    !isNaN(parseInt(styles.marginBottom), 10))
-                {
-                    marginBottom = parseInt(styles.marginBottom, 10);
+            for (var i = 0; i < allElements.length; i++) {
+                if (allElements[i].getBoundingClientRect().bottom > maxBottomVal) {
+                    maxBottomVal = allElements[i].getBoundingClientRect().bottom;
                 }
+            }
 
-                var posBottom = el.getBoundingClientRect().bottom;
-                var elBottom = marginBottom + posBottom;
-
-                if (elBottom > maxBottomVal) {
-                    maxBottomVal = elBottom; 
-                }
-            });
-
-            return Math.ceil(maxBottomVal);
+            return maxBottomVal;
         }
 
         /**
          * Handle document size change, send containing iframe a postMessage.
          */
         function _handleResize() {
-            var newHeight;
-            if (_options.absoluteHeight) {
-                newHeight = _getAbsoluteHeight();
-            } else {
-                newHeight = _getHeight();
-            }
-
+            var newHeight = (_options.absoluteHeight) ? _getAbsoluteHeight() : _getHeight();
             if (_currentHeight === newHeight) {
                 return;
             }
@@ -191,6 +149,7 @@
             _sendHeight(newHeight);
             _currentHeight = newHeight;
         }
+
 
         /**
          * Interval resize loop.
@@ -205,7 +164,7 @@
          */
         function _setupMutationObserver() {
             var target = document.querySelector('body');
-            var observer = new MutationObserver(function() {
+            var observer = new MutationObserver(function(mutations) {
                 _addImageLoadListeners();
                 _handleResize();
              });
@@ -226,8 +185,7 @@
          */
         function enableAutoResize(options) {
             if (options) {
-                _options.absoluteHeight = options.absoluteHeight ||
-                                          _options.absoluteHeight;
+                _options.absoluteHeight = options.absoluteHeight || _options.absoluteHeight;
             }
 
             window.addEventListener('resize', _handleResize);
@@ -252,9 +210,7 @@
                 try {
                     data = JSON.parse(event.data);
                 } catch(err) {
-                    return console.log(
-                        'iframeMessenger: Error parsing data. ' + err.toString()
-                    );
+                    return console.error('Error parsing data. ' + err.toString());
                 }
 
                 // Check postmessage is exptected 
@@ -307,16 +263,15 @@
          * Prep-page for messaging.
          */
         function _setupPage() {
-            _addImageLoadListeners();
-            fixBodyHeight();
-
             // IE9+ as IE8 does not support getComputedStyle
             if (!document.body || !getComputedStyle) {
                 return;
             }
 
-            document.documentElement.style.height = '';
-            document.body.style.height = '';
+            document.documentElement.style.height = 'auto';
+            document.body.style.height = 'auto';
+
+            _addImageLoadListeners();
 
             // Fix Chrome's scrollbar
             document.querySelector('html').style.overflow = 'hidden';
@@ -325,14 +280,9 @@
         /**
          * Handle image load by triggering a resize
          */
-        function _imageLoaded(event) {
-            if (!event || event.type !== 'load') {
-                return;
-            }
-
-            var img = event.srcElement;
+        function _imageLoaded() {
             // Remove image from loading stack
-            var imageIndex = _images.indexOf(img);
+            var imageIndex = _images.indexOf(this);
             if (imageIndex !== -1) {
                 _images.splice(imageIndex, 1);
             }
@@ -370,7 +320,7 @@
             }
         }
 
-        // Only setup the page if inside an iframe
+         // Only setup the page if inside an iframe
         if (_inIframe()) {
             window.addEventListener('DOMContentLoaded', _setupPage, false);
             window.addEventListener('message', _handlePostMessage, false);
