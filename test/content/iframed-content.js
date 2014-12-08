@@ -62,6 +62,26 @@ function transformedElementsWithMargin(height) {
     contentEl.style.marginBottom = marginBottom + 'px';
 }
 
+function getLocation() {
+   iframeMessenger.getLocation(function(data) {
+       window.parent.postMessage(JSON.stringify(data), '*');
+   }); 
+}
+
+function scrollTo(pos) {
+    iframeMessenger.scrollTo(pos.x, pos.y);
+}
+
+function navigate(location) {
+    iframeMessenger.navigate(location);
+}
+
+function getPositionInformation() {
+    iframeMessenger.getPositionInformation(function(data) {
+        window.parent.postMessage(JSON.stringify(data), '*');
+    });
+}
+
 
 function _handlePostMessage(event) {
     if (!event.data) {
@@ -98,7 +118,18 @@ function _handlePostMessage(event) {
         case 'transformedElementsWithMargin':
             transformedElementsWithMargin(data.value);
             break;
-
+        case 'getLocation':
+            getLocation();
+            break;
+        case 'scrollTo':
+            scrollTo(data.value);
+            break;
+        case 'navigate':
+            navigate(data.value);
+            break;
+        case 'getPositionInformation':
+            getPositionInformation();
+            break;
 
     }
 }

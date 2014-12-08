@@ -12,7 +12,6 @@
     "unused"        : true,     // Require all defined variables be used
     "strict"        : false,    // Requires all functions run in ES5 Strict Mode
     "maxdepth"      : 4,        // Max depth of nested blocks (within functions)
-    "maxcomplexity" : 10,       // Max cyclomatic complexity per function
     "maxlen"        : 90,       // Max number of characters per line
 
     // Environment
