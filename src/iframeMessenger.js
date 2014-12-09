@@ -19,7 +19,8 @@
         var _currentHeight;
         var _images = [];
         var _options = {
-            absoluteHeight: false
+            absoluteHeight: false,
+            enableUpdateInterval: true 
         };
 
         /**
@@ -225,21 +226,23 @@
          * Start listening to resize events and trigger a resize.
          */
         function enableAutoResize(options) {
-            if (options) {
-                _options.absoluteHeight = options.absoluteHeight ||
-                                          _options.absoluteHeight;
+            // Apply options
+            for (var key in options) {
+                if (options.hasOwnProperty(key)) {
+                    _options[key] = options[key];
+                }
             }
 
             window.addEventListener('resize', _handleResize);
+            _addImageLoadListeners();
 
             // Check for DOM changes
             if (MutationObserver) {
                 _setupMutationObserver();
-            } else {
+            } else if (_options.enableUpdateInterval === true) {
                 _setupInterval();
             }
         }
-
 
 
         /**
@@ -357,8 +360,9 @@
          * Filter out images in the DOM that haven't loaded yet and add listener
          */
         function _addImageLoadListeners() {
-            for (var i = 0; i < document.images.length; i++) {
-                var image = document.images[i];
+            var imgs = document.querySelectorAll('img');
+            for (var i = 0; i < imgs.length; i++) {
+                var image = imgs[i];
                 // Do nothing if image is already loaded
                 if (image.nodeName === 'IMG' &&
                     image.src &&

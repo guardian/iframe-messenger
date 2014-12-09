@@ -62,6 +62,16 @@ function transformedElementsWithMargin(height) {
     contentEl.style.marginBottom = marginBottom + 'px';
 }
 
+function autoResizeWithImages() {
+    var img = new Image();
+    var url = 'large-image.jpg?cache=' + Date.now();
+    img.setAttribute('src', url);
+    img.setAttribute('id', 'test-image');
+    contentEl.innerHTML = '';
+    contentEl.appendChild(img);
+    iframeMessenger.enableAutoResize({ enableUpdateInterval: false });
+}
+
 function getLocation() {
    iframeMessenger.getLocation(function(data) {
        window.parent.postMessage(JSON.stringify(data), '*');
@@ -129,6 +139,9 @@ function _handlePostMessage(event) {
             break;
         case 'getPositionInformation':
             getPositionInformation();
+            break;
+        case 'autoResizeWithImages':
+            autoResizeWithImages();
             break;
 
     }

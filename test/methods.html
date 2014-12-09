@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Qunit - methods</title>
+  <link rel="stylesheet" href="libs/qunit.css" media="screen">
+  <script src="libs/qunit.js"></script>
+  <script src="../src/iframeMessenger.js"></script>
+
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <iframe src="" height="500" id="iframed-content"></iframe>
+    </div>
+
+    <script>
+        var heights = [30000, 654, 30];
+        var iframeEl = document.querySelector('#iframed-content');
+        var URL = 'content/iframed-content.html';
+
+        // Setup
+        QUnit.module('iframeMessenger - methods', {
+          setup: function() {
+            iframeEl = document.querySelector('#iframed-content');
+            iframeEl.setAttribute('src', URL);
+          }
+        });
+
+        function setupTest(testName, value, callback) {
+            var msg = { test: testName, value: value };
+            iframeEl.addEventListener('load', function() {
+                window.onmessage = callback;
+                iframeEl.contentWindow.postMessage(JSON.stringify(msg), '*');
+            }, false);
+        }
+
+        // Tests 
+        asyncTest("getLocation()", function() {
+            expect(2);
+            
+            function checkTest(event) {
+                var data = JSON.parse(event.data);
+
+                if (data.location) {
+                    equal(data.location, 'echo-test', 'should run callback function');
+                    start();
+                } else {
+                    equal(data.type, 'get-location', 'should send get-location type.');
+                    var msg = { id: data.id, location: 'echo-test' };
+                    iframeEl.contentWindow.postMessage(JSON.stringify(msg), '*');
+                }
+            }
+            setupTest('getLocation', null, checkTest);
+        });
+
+        asyncTest("scrollTo()", function() {
+            expect(3);
+            var msg = { x: 101, y: 202 };
+            
+            function checkTest(event) {
+                var data = JSON.parse(event.data);
+                equal(data.type, 'scroll-to', 'should send correct type');
+                equal(data.x, msg.x, 'should return correct x value');
+                equal(data.y, msg.y, 'should return correct y value');
+                start();
+            }
+
+            setupTest('scrollTo', msg, checkTest);
+        });
+
+        asyncTest("navigate()", function() {
+            expect(2);
+            var msg = 'http://www.example.com/';
+            
+            function checkTest(event) {
+                var data = JSON.parse(event.data);
+                equal(data.type, 'navigate', 'should send correct type');
+                equal(data.value, msg, 'should return correct location');
+                start();
+            }
+
+            setupTest('navigate', msg, checkTest);
+        });
+
+        asyncTest("getPositionInformation()", function() {   
+            expect(2);
+
+            function checkTest(event) {
+                var data = JSON.parse(event.data);
+
+                if (data.position) {
+                    equal(data.position, 'position-test', 'should run callback function');
+                    start();
+                } else {
+                    equal(data.type, 'get-position', 'should corret type');
+                    var msg = { id: data.id, position: 'position-test' };
+                    iframeEl.contentWindow.postMessage(JSON.stringify(msg), '*');
+                }
+            }
+            setupTest('getPositionInformation', null, checkTest);
+        });
+
+        asyncTest("should send uniq id pattern", function() {
+            expect(1);
+            var idRegex = /^iframeMessenger:\w{5}$/i;
+
+            function checkTest(event) {
+                var data = JSON.parse(event.data);
+                ok(idRegex.test(data.id), 'uniq id should match test pattern');
+                start();
+            }
+
+            setupTest('enableAutoResize', 100, checkTest);
+        });
+
+
+
+    </script>
+</body>
+</html>
