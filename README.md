@@ -116,6 +116,13 @@ Sample of returned position data object:
 
 
 ## Changelog
+0.2.7
+- Added support for AdobeEdge content
+- New method for wrapping content using ::before and ::after CSS
+- More consistent height calculations across browsers
+- Listen for window 'load' before auto resizing
+- Lots more tests
+
 0.2.6
 - Added .getLocation(callback) for retrieving parent location information
 - Added postMessage id to identify returning messages
