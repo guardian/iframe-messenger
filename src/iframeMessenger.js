@@ -1,13 +1,14 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.6
+ * version: 0.2.7
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
 
 (function (global) {
     'use strict';
+    /* global AdobeEdge */
 
     var iframeMessenger = (function() {
         var MutationObserver =  window.MutationObserver ||
@@ -221,7 +222,6 @@
             observer.observe(target, config);
         }
 
-
         /**
          * Start listening to resize events and trigger a resize.
          */
@@ -233,6 +233,19 @@
                 }
             }
 
+            // Adobe edge interactives use transform:scale()
+            // Hook into their bootstrap and wait before resizing
+            if (typeof AdobeEdge !== 'undefined' &&
+                typeof AdobeEdge.bootstrapCallback !== 'undefined') {
+                AdobeEdge.bootstrapCallback(_setupAutoResize);
+            } else if (document.readyState !== 'complete') {
+                window.addEventListener('load', _setupAutoResize, false);
+            } else {
+                _setupAutoResize();
+            }
+        }
+
+        function _setupAutoResize() {
             window.addEventListener('resize', _handleResize);
             _addImageLoadListeners();
 
@@ -242,6 +255,8 @@
             } else if (_options.enableUpdateInterval === true) {
                 _setupInterval();
             }
+
+            _handleResize();
         }
 
 
@@ -376,7 +391,7 @@
 
         // Only setup the page if inside an iframe
         if (_inIframe()) {
-            window.addEventListener('DOMContentLoaded', _setupPage, false);
+            window.addEventListener('load', _setupPage, false);
             window.addEventListener('message', _handlePostMessage, false);
         }
 
