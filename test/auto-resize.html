@@ -131,12 +131,17 @@
             expect(2);
 
             var imgHeight = 768;
+            var firstPass = true;
 
             function checkTest(event) {
-            var data = JSON.parse(event.data);
-            equal(data.type, 'set-height', 'should send set-height type.');
-            equal(data.value, imgHeight, 'should set specified height');
-            start();
+                if (firstPass) {
+                    firstPass = false;
+                    return;
+                }
+                var data = JSON.parse(event.data);
+                equal(data.type, 'set-height', 'should send set-height type.');
+                equal(data.value, imgHeight, 'should set specified height');
+                start();
             }
 
             setupTest('autoResizeWithImages', null, checkTest);

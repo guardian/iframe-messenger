@@ -5,7 +5,11 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
 
         qunit: {
-          all: ['test/*.html']
+            options: {
+                '--web-security': false
+            },
+          all: ['test/*.html', '!test/livepages.html'],
+          live: ['test/livepages.html']
         },
 
         jshint: {
@@ -22,5 +26,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-qunit');
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
-    grunt.registerTask('test', ['jshint', 'qunit']);
+    grunt.registerTask('test', ['jshint', 'qunit:all']);
 };

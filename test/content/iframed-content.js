@@ -15,33 +15,33 @@ function defaultResize(height) {
 
 
 function enableAutoResize(height) {
-    iframeMessenger.enableAutoResize();
     contentEl.style.height = height + 'px';
+    iframeMessenger.enableAutoResize();
 }
 
 function floatedElements(height) {
-    iframeMessenger.enableAutoResize();
     contentEl.style.float = 'left';
     contentEl.style.height = height + 'px';
+    iframeMessenger.enableAutoResize();
 }
 
 function setAbsolutePosition(height) {
-    iframeMessenger.enableAutoResize({ absoluteHeight: true });
     contentEl.style.position = 'absolute';
     contentEl.style.top = '0';
     contentEl.style.height = height + 'px';
+    iframeMessenger.enableAutoResize({ absoluteHeight: true });
 }
 
 function transformedElements(height) {
     var newHeight = height - contentEl.getBoundingClientRect().height;
     var transformVal = 'translate(0, ' + newHeight  + 'px)';
 
-    iframeMessenger.enableAutoResize({ absoluteHeight: true });
     contentEl.style.webkitTransform = transformVal;
     contentEl.style.MozTransform = transformVal;
     contentEl.style.msTransform = transformVal;
     contentEl.style.OTransform = transformVal;
     contentEl.style.transform = transformVal;
+    iframeMessenger.enableAutoResize({ absoluteHeight: true });
 }
 
 
@@ -52,14 +52,13 @@ function transformedElementsWithMargin(height) {
     newHeight -= marginBottom;
     var transformVal = 'translate(0, ' + newHeight  + 'px)';
 
-    iframeMessenger.enableAutoResize({ absoluteHeight: true });
     contentEl.style.webkitTransform = transformVal;
     contentEl.style.MozTransform = transformVal;
     contentEl.style.msTransform = transformVal;
     contentEl.style.OTransform = transformVal;
     contentEl.style.transform = transformVal;
-
     contentEl.style.marginBottom = marginBottom + 'px';
+    iframeMessenger.enableAutoResize({ absoluteHeight: true });
 }
 
 function autoResizeWithImages() {
