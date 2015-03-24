@@ -155,3 +155,7 @@ Sample of returned position data object:
 
 0.1.0:
 - Initial release.
+
+
+## Notes
+[HTML Document height via JavaScript research](https://docs.google.com/spreadsheets/d/1dv4bO6F9A0KGF6FdLsIJrKnidnrVsM8i3uI-OfCYjWQ/edit?usp=sharing)
