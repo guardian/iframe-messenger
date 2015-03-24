@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Qunit - Calc height</title>
+  <link rel="stylesheet" href="libs/qunit.css" media="screen">
+  <script src="libs/qunit.js"></script>
+  <script src="../src/iframeMessenger.js"></script>
+
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <iframe src="" height="500" id="iframed-content"></iframe>
+    </div>
+
+    <script>
+        var heights = [30000, 654, 30];
+        var iframeEl = document.querySelector('#iframed-content');
+        var URL = 'content/iframed-content.html';
+
+        // Setup
+        QUnit.module('iframeMessenger - Calc height', {
+          setup: function() {
+            iframeEl = document.querySelector('#iframed-content');
+            iframeEl.setAttribute('src', URL);
+          }
+        });
+
+        function setupTest(testName, value, callback) {
+            var msg = { test: testName, value: value };
+            iframeEl.addEventListener('load', function() {
+               window.onmessage = callback;
+                iframeEl.contentWindow.postMessage(JSON.stringify(msg), '*');
+            }, false);
+        }
+
+
+        // Tests 
+        function runTests(height) { 
+
+            asyncTest("enableAutoResize() - height:" + height, function() {
+                expect(2);
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    equal(data.type, 'set-height', 'should send set-height type.');
+                    equal(data.value, height, 'should set specified height');
+                    start();
+                }
+                setupTest('enableAutoResize', height, checkTest);
+            });
+
+            asyncTest("enableAutoResize() absolute position - height:" + height, function() {
+                expect(2);
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    equal(data.type, 'set-height', 'should send set-height type.');
+                    equal(data.value, height, 'should set specified height');
+                    start();
+                }
+                setupTest('absolutePosition', height, checkTest);
+            });
+
+            asyncTest("resize() specific height - height:" + height, function() {
+                expect(2);
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    equal(data.type, 'set-height', 'should send set-height type.');
+                    equal(data.value, height, 'should set specified height');
+                    start();
+                }
+
+                setupTest('specificHeight', height, checkTest);
+            });
+
+            asyncTest("resize() without specifying value - height:" + height, function() {
+                expect(2);
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    equal(data.type, 'set-height', 'should send set-height type.');
+                    equal(data.value, height, 'should set specified height');
+                    start();
+                }
+
+                setupTest('defaultResize', height, checkTest);
+            });
+
+            asyncTest("enableAutoResize() floated elements - height:" + height, function() {
+                expect(2);
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    equal(data.type, 'set-height', 'should send set-height type.');
+                    equal(data.value, height, 'should set specified height');
+                    start();
+                }
+
+                setupTest('floatedElements', height, checkTest);
+            });
+            
+            asyncTest("enableAutoResize() CSS transformed elements - height:" + height, function() {
+                expect(2);
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    equal(data.type, 'set-height', 'should send set-height type.');
+                    equal(data.value, height, 'should set specified height');
+                    start();
+                }
+
+                setupTest('transformedElements', height, checkTest);
+            });
+            
+            asyncTest("enableAutoResize() CSS transformed & margin elements - height:" + height, function() {
+                expect(2);
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    equal(data.type, 'set-height', 'should send set-height type.');
+                    equal(data.value, height, 'should set specified height');
+                    start();
+                }
+
+                setupTest('transformedElementsWithMargin', height, checkTest);
+            });
+
+
+        }
+
+        // Run tests
+        heights.forEach(runTests);
+
+        asyncTest("enableAutoResize() detects image loads:", function() {
+            expect(2);
+
+            var imgHeight = 768;
+            var firstPass = true;
+
+            function checkTest(event) {
+                if (firstPass) {
+                    firstPass = false;
+                    return;
+                }
+                var data = JSON.parse(event.data);
+                equal(data.type, 'set-height', 'should send set-height type.');
+                equal(data.value, imgHeight, 'should set specified height');
+                start();
+            }
+
+            setupTest('autoResizeWithImages', null, checkTest);
+        });
+
+
+    </script>
+</body>
+</html>

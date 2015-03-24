@@ -1,23 +1,27 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.6
+ * version: 0.2.7
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
 
 (function (global) {
     'use strict';
+    /* global AdobeEdge */
 
     var iframeMessenger = (function() {
-        var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+        var MutationObserver =  window.MutationObserver ||
+                                window.WebKitMutationObserver ||
+                                window.MozMutationObserver;
         var REFRESH_DELAY = 200;
         var MSG_ID_PREFIX = 'iframeMessenger';
         var _postMessageCallbacks = {};
-        var _currentHeight = 0;
+        var _currentHeight;
         var _images = [];
         var _options = {
-            absoluteHeight: false
+            absoluteHeight: false,
+            enableUpdateInterval: true 
         };
 
         /**
@@ -57,6 +61,33 @@
             } catch (e) {
                 return true;
             }
+        }
+
+        /**
+         * Fix body margin and floats.
+         */
+        function fixBodyHeight() {
+            var css = 'body::before, body::after{';
+            css += 'content: ".";';
+            css += 'height: 0;';
+            css += 'margin: 0;';
+            css += 'overflow: hidden;';
+            css += 'visibility: hidden;';
+            css += 'display: block;';
+            css += 'clear: both;';
+            css += '}';
+            css += 'body{';
+            css += 'margin: 0 !important;';
+            css += 'display: inline-block !important;';
+            css += 'float: left !important;';
+            css += 'width: 100% !important;';
+            css += 'box-sizing: border-box !important;';
+            css += '}';
+            
+            var head = document.querySelector('head');
+            var styleEl = document.createElement('style');
+            styleEl.appendChild(document.createTextNode(css));
+            head.appendChild(styleEl);
         }
 
 
@@ -106,11 +137,11 @@
          * @return {int} Height integer
          */
         function _getHeight() {
-            var htmlEl = document.querySelector('html');
-            var htmlHeight = htmlEl.getBoundingClientRect().height;
-            var docScrollHeight = document.documentElement.scrollHeight;
-            var maxHeight = Math.max(htmlHeight, docScrollHeight);
-            return parseInt(maxHeight, 10);
+            var height = parseInt(document.body.offsetHeight, 10);
+            var styles = document.defaultView.getComputedStyle(document.body);
+            height += parseInt(styles.getPropertyValue('margin-bottom'), 10);
+            height += parseInt(styles.getPropertyValue('margin-top'), 10);
+            return height; 
         }
 
         /**
@@ -127,20 +158,38 @@
         function _getAbsoluteHeight() {
             var allElements = document.querySelectorAll('body *');
             var maxBottomVal = 0;
-            for (var i = 0; i < allElements.length; i++) {
-                if (allElements[i].getBoundingClientRect().bottom > maxBottomVal) {
-                    maxBottomVal = allElements[i].getBoundingClientRect().bottom;
-                }
-            }
 
-            return maxBottomVal;
+            Array.prototype.forEach.call(allElements, function(el) {
+                var styles = window.getComputedStyle(el);
+                var marginBottom = 0;
+                if (styles.marginBottom &&
+                    !isNaN(parseInt(styles.marginBottom), 10))
+                {
+                    marginBottom = parseInt(styles.marginBottom, 10);
+                }
+
+                var posBottom = el.getBoundingClientRect().bottom;
+                var elBottom = marginBottom + posBottom;
+
+                if (elBottom > maxBottomVal) {
+                    maxBottomVal = elBottom; 
+                }
+            });
+
+            return Math.ceil(maxBottomVal);
         }
 
         /**
          * Handle document size change, send containing iframe a postMessage.
          */
         function _handleResize() {
-            var newHeight = (_options.absoluteHeight) ? _getAbsoluteHeight() : _getHeight();
+            var newHeight;
+            if (_options.absoluteHeight) {
+                newHeight = _getAbsoluteHeight();
+            } else {
+                newHeight = _getHeight();
+            }
+
             if (_currentHeight === newHeight) {
                 return;
             }
@@ -148,7 +197,6 @@
             _sendHeight(newHeight);
             _currentHeight = newHeight;
         }
-
 
         /**
          * Interval resize loop.
@@ -163,7 +211,7 @@
          */
         function _setupMutationObserver() {
             var target = document.querySelector('body');
-            var observer = new MutationObserver(function(mutations) {
+            var observer = new MutationObserver(function() {
                 _addImageLoadListeners();
                 _handleResize();
              });
@@ -178,25 +226,42 @@
             observer.observe(target, config);
         }
 
-
         /**
          * Start listening to resize events and trigger a resize.
          */
         function enableAutoResize(options) {
-            if (options) {
-                _options.absoluteHeight = options.absoluteHeight || _options.absoluteHeight;
+            // Apply options
+            for (var key in options) {
+                if (options.hasOwnProperty(key)) {
+                    _options[key] = options[key];
+                }
             }
 
+            // Adobe edge interactives use transform:scale()
+            // Hook into their bootstrap and wait before resizing
+            if (typeof AdobeEdge !== 'undefined' &&
+                typeof AdobeEdge.bootstrapCallback !== 'undefined') {
+                AdobeEdge.bootstrapCallback(_setupAutoResize);
+            } else if (document.readyState !== 'complete') {
+                window.addEventListener('load', _setupAutoResize, false);
+            } else {
+                _setupAutoResize();
+            }
+        }
+
+        function _setupAutoResize() {
             window.addEventListener('resize', _handleResize);
+            _addImageLoadListeners();
 
             // Check for DOM changes
             if (MutationObserver) {
                 _setupMutationObserver();
-            } else {
+            } else if (_options.enableUpdateInterval === true) {
                 _setupInterval();
             }
-        }
 
+            _handleResize();
+        }
 
 
         /**
@@ -209,7 +274,9 @@
                 try {
                     data = JSON.parse(event.data);
                 } catch(err) {
-                    return console.error('Error parsing data. ' + err.toString());
+                    return console.log(
+                        'iframeMessenger: Error parsing data. ' + err.toString()
+                    );
                 }
 
                 // Check postmessage is exptected 
@@ -262,15 +329,16 @@
          * Prep-page for messaging.
          */
         function _setupPage() {
+            _addImageLoadListeners();
+            fixBodyHeight();
+
             // IE9+ as IE8 does not support getComputedStyle
             if (!document.body || !getComputedStyle) {
                 return;
             }
 
-            document.documentElement.style.height = 'auto';
-            document.body.style.height = 'auto';
-
-            _addImageLoadListeners();
+            document.documentElement.style.height = '';
+            document.body.style.height = '';
 
             // Fix Chrome's scrollbar
             document.querySelector('html').style.overflow = 'hidden';
@@ -279,9 +347,14 @@
         /**
          * Handle image load by triggering a resize
          */
-        function _imageLoaded() {
+        function _imageLoaded(event) {
+            if (!event || event.type !== 'load') {
+                return;
+            }
+
+            var img = event.srcElement;
             // Remove image from loading stack
-            var imageIndex = _images.indexOf(this);
+            var imageIndex = _images.indexOf(img);
             if (imageIndex !== -1) {
                 _images.splice(imageIndex, 1);
             }
@@ -306,8 +379,9 @@
          * Filter out images in the DOM that haven't loaded yet and add listener
          */
         function _addImageLoadListeners() {
-            for (var i = 0; i < document.images.length; i++) {
-                var image = document.images[i];
+            var imgs = document.querySelectorAll('img');
+            for (var i = 0; i < imgs.length; i++) {
+                var image = imgs[i];
                 // Do nothing if image is already loaded
                 if (image.nodeName === 'IMG' &&
                     image.src &&
@@ -319,9 +393,9 @@
             }
         }
 
-         // Only setup the page if inside an iframe
+        // Only setup the page if inside an iframe
         if (_inIframe()) {
-            window.addEventListener('DOMContentLoaded', _setupPage, false);
+            window.addEventListener('load', _setupPage, false);
             window.addEventListener('message', _handlePostMessage, false);
         }
 

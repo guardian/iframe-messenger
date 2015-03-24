@@ -1,0 +1,23 @@
+<html>
+<head>
+  <title>Inner iframe non-standard html</title>
+
+  <!-- Load local QUnit. -->
+  <script src="../../src/iframeMessenger.js"></script>
+
+    <style>
+        html { background: blue; }
+        body { background: green; }
+        #output { background: yellow; margin: 0; }
+    </style>
+
+</head>
+<body>
+
+    <div id="content">
+        <p id="output">Hello world.</p>
+    </div>
+
+    <script src="iframed-content.js"></script>
+</body>
+</html>

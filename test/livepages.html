@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Qunit - live pages</title>
+  <link rel="stylesheet" href="libs/qunit.css" media="screen">
+  <script src="libs/qunit.js"></script>
+
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <!-- <iframe src="" height="500" id="iframed&#45;content" width="600"></iframe> -->
+    </div>
+
+    <script>
+        // NOTE: Live test are flaky and likey to fail due to timeouts
+
+        var iframe;
+        var el = document.querySelector('#qunit-fixture');
+        var embeds = [
+            'http://interactive.guim.co.uk/embed/pallen/2015/Jan/city_bloggers_world/city-bloggers-world.html',
+            'http://interactive.guim.co.uk/embed/aus/2015/jan/executions/',
+            'http://interactive.guim.co.uk/embed/2014/may/responsive-facewall-master/index.html?0ApbXznsEnzURdHhwcUF4cGl6TmQ2Y2hWeFZXV081dXc',
+            'http://interactive.guim.co.uk/embed/2014/sep/the-last-saturday/index.html',
+            'http://interactive.guim.co.uk/embed/labs/2014/nov/britishgas/index.html',
+            'http://interactive.guim.co.uk/embed/2014/may/bisons/bison-list/index.html'
+        ];
+
+
+        function setupTest(url, callback) {
+            iframe = document.createElement('iframe');
+            iframe.height = 500;
+            iframe.width = 500;
+            iframe.onload = function() { window.onmessage = callback; }
+            iframe.src = url;
+            el.appendChild(iframe);
+        }
+
+        function runTests(url) {
+            asyncTest("should send uniq id pattern", function() {
+                expect(2);
+                var idRegex = /^iframeMessenger:\w{5}$/i;
+
+                function checkTest(event) {
+                    var data = JSON.parse(event.data);
+                    iframe.setAttribute('height', data.value);
+                    setTimeout(function() {
+                        ok(idRegex.test(data.id), 'uniq id should match test pattern');
+                        var scrollHeight = iframe.contentDocument.body.scrollHeight;
+                        var clientHeight = iframe.contentDocument.body.clientHeight;
+                        console.log(scrollHeight, clientHeight);
+                        equal(scrollHeight, clientHeight, 'client & scroll heights match');
+                        start();
+                    }, 400);
+
+                }
+
+                setupTest(url, checkTest);
+            });
+        }
+
+        embeds.forEach(runTests);
+
+    </script>
+</body>
+</html>

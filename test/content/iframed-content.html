@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inner iframe</title>
+
+  <!-- Load local QUnit. -->
+  <script src="../../src/iframeMessenger.js"></script>
+
+    <style>
+        html { background: blue; }
+        body { background: green; }
+        #output { background: yellow; margin: 0; }
+        #test-image { margin: 0; padding: 0; float: left; }
+    </style>
+
+</head>
+<body>
+
+    <div id="content">
+        <p id="output">Hello world.</p>
+    </div>
+
+    <script src="iframed-content.js"></script>
+</body>
+</html>
