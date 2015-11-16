@@ -21,7 +21,7 @@
         var _images = [];
         var _options = {
             absoluteHeight: false,
-            enableUpdateInterval: true 
+            enableUpdateInterval: true
         };
 
         /**
@@ -83,7 +83,7 @@
             css += 'width: 100% !important;';
             css += 'box-sizing: border-box !important;';
             css += '}';
-            
+
             var head = document.querySelector('head');
             var styleEl = document.createElement('style');
             styleEl.appendChild(document.createTextNode(css));
@@ -118,6 +118,16 @@
             }
         }
 
+        /**
+         * Run function on load or immediately if ready
+         */
+        function _onLoad(fn) {
+            if (document.readyState !== 'complete') {
+                window.addEventListener('load', fn, false);
+            } else {
+                fn();
+            }
+        }
 
         /**
          * Send height.
@@ -141,7 +151,7 @@
             var styles = document.defaultView.getComputedStyle(document.body);
             height += parseInt(styles.getPropertyValue('margin-bottom'), 10);
             height += parseInt(styles.getPropertyValue('margin-top'), 10);
-            return height; 
+            return height;
         }
 
         /**
@@ -172,7 +182,7 @@
                 var elBottom = marginBottom + posBottom;
 
                 if (elBottom > maxBottomVal) {
-                    maxBottomVal = elBottom; 
+                    maxBottomVal = elBottom;
                 }
             });
 
@@ -242,10 +252,8 @@
             if (typeof AdobeEdge !== 'undefined' &&
                 typeof AdobeEdge.bootstrapCallback !== 'undefined') {
                 AdobeEdge.bootstrapCallback(_setupAutoResize);
-            } else if (document.readyState !== 'complete') {
-                window.addEventListener('load', _setupAutoResize, false);
             } else {
-                _setupAutoResize();
+                _onLoad(_setupAutoResize)
             }
         }
 
@@ -279,7 +287,7 @@
                     );
                 }
 
-                // Check postmessage is exptected 
+                // Check postmessage is exptected
                 if (data.hasOwnProperty('id') &&
                     _postMessageCallbacks.hasOwnProperty(data.id))
                 {
@@ -395,7 +403,7 @@
 
         // Only setup the page if inside an iframe
         if (_inIframe()) {
-            window.addEventListener('load', _setupPage, false);
+            _onLoad(_setupPage);
             window.addEventListener('message', _handlePostMessage, false);
         }
 
