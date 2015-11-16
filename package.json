@@ -1,6 +1,6 @@
 {
   "name": "iframe-messenger",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "iframe messenger",
   "main": "src/iframeMessenger.js",
   "scripts": {
