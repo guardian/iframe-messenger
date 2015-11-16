@@ -8,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/GuardianInteractive/iframe-messenger.git"
+    "url": "git://github.com/guardian/iframe-messenger.git"
   },
   "author": "Guardian Interactive",
   "bugs": {
-    "url": "https://github.com/GuardianInteractive/iframe-messenger/issues"
+    "url": "https://github.com/guardian/iframe-messenger/issues"
   },
-  "homepage": "https://github.com/GuardianInteractive/iframe-messenger",
+  "homepage": "https://github.com/guardian/iframe-messenger",
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "^0.10.0",
