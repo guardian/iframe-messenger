@@ -6,7 +6,7 @@ and link navigation of the parent window.
 
 ## Latest CDN version
 
-http://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js
+https://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js
 
 Usage
 =====
@@ -15,7 +15,7 @@ Include the library within your page or application via `<script>` or `require()
 
 Auto-resize example:
 ```html
-<script src="//interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
+<script src="https://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
 <script>
     iframeMessenger.enableAutoResize();
 </script>
@@ -23,7 +23,7 @@ Auto-resize example:
 
 Getting parent's URL hash fragment example:
 ```html
-<script src="//interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
+<script src="https://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
 <script>
     function logParentHashFragment(locationObj) {
         console.log(locationObj.hash);
@@ -35,7 +35,7 @@ Getting parent's URL hash fragment example:
 
 Send all links to parent window example:
 ```html
-<script src="//interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
+<script src="https://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
 <script>
     var links = document.querySelectorAll('a');
     for(var i = 0; i < links.length; i++) {
