@@ -138,8 +138,15 @@
                 type:'set-height',
                 value: height
             };
+            // For AMP pages iframes must send a specific message for resizing
+            var ampMessage = {
+                sentinel: 'amp',
+                type: 'embed-size',
+                height: height
+            };
 
             _postMessage(message);
+            _postMessage(ampMessage);
         }
 
         /**
