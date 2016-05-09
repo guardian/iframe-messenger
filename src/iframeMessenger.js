@@ -294,7 +294,7 @@
                     );
                 }
 
-                // Check postmessage is exptected
+                // Check postmessage is expected
                 if (data.hasOwnProperty('id') &&
                     _postMessageCallbacks.hasOwnProperty(data.id))
                 {
@@ -337,6 +337,34 @@
                 type:'scroll-to',
                 x: _x,
                 y: _y
+            });
+        }
+
+        /**
+         * Tell the parent to monitor whether the iframe container is in the
+         * visible viewport and message the iframe when this changes.
+         * @param {Function} onVisibilityChange Callback to fire on visibility change
+         */
+        function monitorVisibility(threshold, onVisibilityChange) {
+            window.addEventListener('message', function(ev) {
+                if (ev.data) {
+                    var data;
+                    try {
+                        data = JSON.parse(ev.data);
+                    } catch(err) {
+                        return console.log(
+                            'iframeMessenger: Error parsing data. ' + err.toString()
+                        );
+                    }
+                    if (data.hasOwnProperty('visible')) {
+                        onVisibilityChange(data.visible);
+                    }
+                }
+            });
+
+            _postMessage({
+                type: 'monitor-visibility',
+                threshold: threshold
             });
         }
 
@@ -421,7 +449,8 @@
             scrollTo: scrollTo,
             getLocation: getLocation,
             getAbsoluteHeight: _getAbsoluteHeight,
-            getPositionInformation: getPositionInformation
+            getPositionInformation: getPositionInformation,
+            monitorVisibility: monitorVisibility
         };
     }());
 
