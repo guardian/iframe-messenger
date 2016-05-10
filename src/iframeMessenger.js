@@ -298,9 +298,15 @@
                 if (data.hasOwnProperty('id') &&
                     _postMessageCallbacks.hasOwnProperty(data.id))
                 {
-                    // Run callback with data a clean up afterwards
+                    // Run callback with data
                     _postMessageCallbacks[data.id](data);
-                    delete _postMessageCallbacks[data.id];
+
+                    // If subscribe is true, then assume the callback can be
+                    // called an indefinite number of times. Otherwise, assume this
+                    // was a one-time request for data which has now been fulfilled.
+                    if (!data.subscribe) {
+                        delete _postMessageCallbacks[data.id];
+                    }
                 }
             }
         }
@@ -341,31 +347,12 @@
         }
 
         /**
-         * Tell the parent to monitor whether the iframe container is in the
-         * visible viewport and message the iframe when this changes.
-         * @param {Function} onVisibilityChange Callback to fire on visibility change
+         * Tell the parent to monitor the position of the iframe container
          */
-        function monitorVisibility(threshold, onVisibilityChange) {
-            window.addEventListener('message', function(ev) {
-                if (ev.data) {
-                    var data;
-                    try {
-                        data = JSON.parse(ev.data);
-                    } catch(err) {
-                        return console.log(
-                            'iframeMessenger: Error parsing data. ' + err.toString()
-                        );
-                    }
-                    if (data.hasOwnProperty('visible')) {
-                        onVisibilityChange(data.visible);
-                    }
-                }
-            });
-
+        function monitorPosition(callback) {
             _postMessage({
-                type: 'monitor-visibility',
-                threshold: threshold
-            });
+                type: 'monitor-position'
+            }, callback);
         }
 
         /**
@@ -450,7 +437,7 @@
             getLocation: getLocation,
             getAbsoluteHeight: _getAbsoluteHeight,
             getPositionInformation: getPositionInformation,
-            monitorVisibility: monitorVisibility
+            monitorPosition: monitorPosition
         };
     }());
 
