@@ -294,13 +294,19 @@
                     );
                 }
 
-                // Check postmessage is exptected
+                // Check postmessage is expected
                 if (data.hasOwnProperty('id') &&
                     _postMessageCallbacks.hasOwnProperty(data.id))
                 {
-                    // Run callback with data a clean up afterwards
+                    // Run callback with data
                     _postMessageCallbacks[data.id](data);
-                    delete _postMessageCallbacks[data.id];
+
+                    // If subscribe is true, then assume the callback can be
+                    // called an indefinite number of times. Otherwise, assume this
+                    // was a one-time request for data which has now been fulfilled.
+                    if (!data.subscribe) {
+                        delete _postMessageCallbacks[data.id];
+                    }
                 }
             }
         }
@@ -338,6 +344,15 @@
                 x: _x,
                 y: _y
             });
+        }
+
+        /**
+         * Tell the parent to monitor the position of the iframe container
+         */
+        function monitorPosition(callback) {
+            _postMessage({
+                type: 'monitor-position'
+            }, callback);
         }
 
         /**
@@ -421,7 +436,8 @@
             scrollTo: scrollTo,
             getLocation: getLocation,
             getAbsoluteHeight: _getAbsoluteHeight,
-            getPositionInformation: getPositionInformation
+            getPositionInformation: getPositionInformation,
+            monitorPosition: monitorPosition
         };
     }());
 
