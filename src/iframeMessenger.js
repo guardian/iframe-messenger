@@ -423,6 +423,35 @@
             }
         }
 
+        function _addAcquisitionDataToLinks(acquisitionData) {
+            var links = document.getElementsByClassName('js-acquisition-link');
+            var json = JSON.stringify(acquisitionData);
+            for (var i = 0; i < links.length; i++) {
+                var href = link.attr('href');
+                if (href) {
+                    var url;
+                    try {
+                        url = new URL(href);
+                    } catch (e) {
+                        return;
+                    }
+                    url.searchParams.set('acquisitionData', json);
+                    link.attr('href', url.toString())
+                }
+            }
+        }
+
+        function _enrichAcquisitionLinks(acquisitionData) {
+            _addAcquisitionDataToLinks(acquisitionData);
+            var message = { type: 'enrich-acquisition-links' };
+            _postMessage(message, function(data) {
+                var referrerData = data.referrerData;
+                if (referrerData && data.type === message.type) {
+                    _addAcquisitionDataToLinks(Object.assign({}, acquisitionData, referrerData))
+                }
+            });
+        }
+
         // Only setup the page if inside an iframe
         if (_inIframe()) {
             _onLoad(_setupPage);
@@ -437,7 +466,8 @@
             getLocation: getLocation,
             getAbsoluteHeight: _getAbsoluteHeight,
             getPositionInformation: getPositionInformation,
-            monitorPosition: monitorPosition
+            monitorPosition: monitorPosition,
+            enrichAcquisitionLinks: _enrichAcquisitionLinks
         };
     }());
 
