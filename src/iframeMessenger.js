@@ -425,7 +425,7 @@
 
         function _addAcquisitionDataToLinks(acquisitionData) {
             var links = document.getElementsByClassName('js-acquisition-link');
-            var json = JSON.stringify(acquisitionData);
+            var json = encodeURIComponent(JSON.stringify(acquisitionData));
             for (var i = 0; i < links.length; i++) {
                 var href = link.attr('href');
                 if (href) {
