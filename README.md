@@ -108,6 +108,21 @@ Sample of returned position data object:
 }
 ```
 
+#### .enrichAcquisitionLinks()
+_Guardian specific._ Adds the field-value pair `acquisitionData=<encode JSON>` to all links with class 
+`"js-acquisition-link"`. Typical usage:
+```Javascript
+<script src="https://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
+<script>
+    iframeMessenger.enrichAcquisitionLinks({
+        componentId: 'us_campain_epic',
+        componentType: 'ACQUISITIONS_EPIC',
+        source: 'GUARDIAN_WEB',
+        campaignCode: 'us_campaign'
+    })
+</script>
+```
+
 ## Similar projects
  - **easyXDM**: De facto standard https://github.com/oyvindkinsey/easyXDM
  - **jquery-iframe-auto-height**: Good cross-browser support https://github.com/house9/jquery-iframe-auto-height
@@ -116,6 +131,9 @@ Sample of returned position data object:
 
 
 ## Changelog
+0.2.8
+- Added .enrichAcquisitionLinks(object)
+
 0.2.7
 - Added support for AdobeEdge content
 - New method for wrapping content using ::before and ::after CSS
