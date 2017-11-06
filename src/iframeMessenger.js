@@ -441,7 +441,9 @@
             _postMessage(message, function(data) {
                 var referrerData = data.referrerData;
                 if (referrerData && data.type === message.type) {
-                    _addAcquisitionDataToLinks(Object.assign({}, acquisitionData, referrerData))
+                    acquisitionData.referrerUrl = referrerData.referrerUrl;
+                    acquisitionData.referrerPageviewId = referrerData.referrerPageviewId;
+                    _addAcquisitionDataToLinks(acquisitionData);
                 }
             });
         }
