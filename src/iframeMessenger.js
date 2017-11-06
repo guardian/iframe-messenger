@@ -429,14 +429,8 @@
             for (var i = 0; i < links.length; i++) {
                 var href = link.attr('href');
                 if (href) {
-                    var url;
-                    try {
-                        url = new URL(href);
-                    } catch (e) {
-                        return;
-                    }
-                    url.searchParams.set('acquisitionData', json);
-                    link.attr('href', url.toString())
+                    href = `${href}${href.includes('?') ? '&' : '?'}${json}`;
+                    link.attr('href', href);                    
                 }
             }
         }
