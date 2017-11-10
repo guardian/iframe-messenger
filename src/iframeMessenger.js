@@ -429,11 +429,7 @@
             for (var i = 0; i < links.length; i++) {
                 var href = link.getAttribute('href');
                 if (href) {
-                    if (href.indexOf('?') === -1) {
-                        href += '?';
-                    } else {
-                        href += '&';
-                    }
+                    href += href.indexOf('?') === -1 ? '?' : '&';
                     href += 'acquisitionData=';
                     href += json;
                     link.setAttribute('href', href);                    
