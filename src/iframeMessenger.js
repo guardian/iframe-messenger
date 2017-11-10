@@ -436,11 +436,7 @@
         }
 
         function _buildAcquisitionData(acquisitionData, referrerData) {
-            if (acquisitionData && 
-                typeof acquisitionData === 'object' && 
-                referrerData &&
-                typeof referrerData === 'object') 
-            {
+            if (acquisitionData && referrerData) {
                 var out = {};
                 out.componentId = acquisitionData.componentId;
                 out.componentType = acquisitionData.componentType;
@@ -449,7 +445,7 @@
                 out.campaignCode = acquisitionData.campaignCode;
                 out.referrerPageviewId = referrerData.referrerPageviewId;
                 out.referrerUrl = referrerData.referrerUrl;
-                return out
+                return out;
             }
             return null;
         }
