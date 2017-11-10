@@ -427,10 +427,10 @@
             var links = document.getElementsByClassName('js-acquisition-link');
             var json = encodeURIComponent(JSON.stringify(acquisitionData));
             for (var i = 0; i < links.length; i++) {
-                var href = link.attr('href');
+                var href = link.getAttribute('href');
                 if (href) {
                     href = `${href}${href.includes('?') ? '&' : '?'}${json}`;
-                    link.attr('href', href);                    
+                    link.setAttribute('href', href);                    
                 }
             }
         }
