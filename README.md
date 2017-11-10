@@ -115,7 +115,7 @@ _Guardian specific._ Adds the field-value pair `acquisitionData=<encode JSON>` t
 <script src="https://interactive.guim.co.uk/libs/iframe-messenger/iframeMessenger.js"></script>
 <script>
     iframeMessenger.enrichAcquisitionLinks({
-        componentId: 'us_campain_epic',
+        componentId: 'us_campaign_epic',
         componentType: 'ACQUISITIONS_EPIC',
         source: 'GUARDIAN_WEB',
         campaignCode: 'us_campaign'

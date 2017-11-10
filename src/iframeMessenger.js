@@ -435,15 +435,35 @@
             }
         }
 
+        function _buildAcquisitionData(acquisitionData, referrerData) {
+            if (acquisitionData && 
+                typeof acquisitionData === 'object' && 
+                referrerData &&
+                typeof referrerData === 'object') 
+            {
+                var out = {};
+                out.componentId = acquisitionData.componentId;
+                out.componentType = acquisitionData.componentType;
+                out.source = acquisitionData.source;
+                out.abTest = acquisitionData.abTest;
+                out.campaignCode = acquisitionData.campaignCode;
+                out.referrerPageviewId = referrerData.referrerPageviewId;
+                out.referrerUrl = referrerData.referrerUrl;
+                return out
+            }
+            return null;
+        }
+
         function _enrichAcquisitionLinks(acquisitionData) {
             _addAcquisitionDataToLinks(acquisitionData);
             var message = { type: 'enrich-acquisition-links' };
             _postMessage(message, function(data) {
                 var referrerData = data.referrerData;
                 if (referrerData && data.type === message.type) {
-                    acquisitionData.referrerUrl = referrerData.referrerUrl;
-                    acquisitionData.referrerPageviewId = referrerData.referrerPageviewId;
-                    _addAcquisitionDataToLinks(acquisitionData);
+                    var updatedAcquisitionData = _buildAcquisitionData(acquisitionData, referrerData);
+                    if (updatedAcquisitionData) {
+                        _addAcquisitionDataToLinks(updatedAcquisitionData);
+                    }
                 }
             });
         }
