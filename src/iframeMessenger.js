@@ -439,15 +439,15 @@
 
         function _buildAcquisitionData(acquisitionData, referrerData) {
             if (acquisitionData && referrerData) {
-                var out = {};
-                out.componentId = acquisitionData.componentId;
-                out.componentType = acquisitionData.componentType;
-                out.source = acquisitionData.source;
-                out.abTest = acquisitionData.abTest;
-                out.campaignCode = acquisitionData.campaignCode;
-                out.referrerPageviewId = referrerData.referrerPageviewId;
-                out.referrerUrl = referrerData.referrerUrl;
-                return out;
+                return {
+                    componentId: acquisitionData.componentId,
+                    componentType: acquisitionData.componentType,
+                    source: acquisitionData.source,
+                    abTest: acquisitionData.abTest,
+                    campaignCode: acquisitionData.campaignCode,
+                    referrerPageviewId: referrerData.referrerPageviewId,
+                    referrerUrl: referrerData.referrerUrl
+                }
             }
             return null;
         }
