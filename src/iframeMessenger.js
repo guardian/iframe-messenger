@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.7
+ * version: 0.2.8
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
@@ -423,6 +423,49 @@
             }
         }
 
+        function _addAcquisitionDataToLinks(acquisitionData) {
+            var links = document.getElementsByClassName('js-acquisition-link');
+            var json = encodeURIComponent(JSON.stringify(acquisitionData));
+            for (var i = 0; i < links.length; i++) {
+                var href = link.getAttribute('href');
+                if (href) {
+                    href += href.indexOf('?') === -1 ? '?' : '&';
+                    href += 'acquisitionData=';
+                    href += json;
+                    link.setAttribute('href', href);                    
+                }
+            }
+        }
+
+        function _buildAcquisitionData(acquisitionData, referrerData) {
+            if (acquisitionData && referrerData) {
+                return {
+                    componentId: acquisitionData.componentId,
+                    componentType: acquisitionData.componentType,
+                    source: acquisitionData.source,
+                    abTest: acquisitionData.abTest,
+                    campaignCode: acquisitionData.campaignCode,
+                    referrerPageviewId: referrerData.referrerPageviewId,
+                    referrerUrl: referrerData.referrerUrl
+                }
+            }
+            return null;
+        }
+
+        function _enrichAcquisitionLinks(acquisitionData) {
+            _addAcquisitionDataToLinks(acquisitionData);
+            var message = { type: 'enrich-acquisition-links' };
+            _postMessage(message, function(data) {
+                var referrerData = data.referrerData;
+                if (referrerData && data.type === message.type) {
+                    var updatedAcquisitionData = _buildAcquisitionData(acquisitionData, referrerData);
+                    if (updatedAcquisitionData) {
+                        _addAcquisitionDataToLinks(updatedAcquisitionData);
+                    }
+                }
+            });
+        }
+
         // Only setup the page if inside an iframe
         if (_inIframe()) {
             _onLoad(_setupPage);
@@ -437,7 +480,8 @@
             getLocation: getLocation,
             getAbsoluteHeight: _getAbsoluteHeight,
             getPositionInformation: getPositionInformation,
-            monitorPosition: monitorPosition
+            monitorPosition: monitorPosition,
+            enrichAcquisitionLinks: _enrichAcquisitionLinks
         };
     }());
 
