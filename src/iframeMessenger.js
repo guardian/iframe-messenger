@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.8
+ * version: 0.2.9
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */

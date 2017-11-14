@@ -131,6 +131,10 @@ _Guardian specific._ Adds the field-value pair `acquisitionData=<encode JSON>` t
 
 
 ## Changelog
+
+0.2.9
+- Fix bug in acquisition link tracking.
+
 0.2.8
 - Added .enrichAcquisitionLinks(object)
 
