@@ -427,6 +427,7 @@
             var links = document.getElementsByClassName('js-acquisition-link');
             var json = encodeURIComponent(JSON.stringify(acquisitionData));
             for (var i = 0; i < links.length; i++) {
+                var link = links[i];
                 var href = link.getAttribute('href');
                 if (href) {
                     href += href.indexOf('?') === -1 ? '?' : '&';
