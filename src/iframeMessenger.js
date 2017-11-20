@@ -454,7 +454,6 @@
         }
 
         function _enrichAcquisitionLinks(acquisitionData) {
-            _addAcquisitionDataToLinks(acquisitionData);
             var message = { type: 'enrich-acquisition-links' };
             _postMessage(message, function(data) {
                 var referrerData = data.referrerData;
