@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.9
+ * version: 0.2.10
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
@@ -454,7 +454,6 @@
         }
 
         function _enrichAcquisitionLinks(acquisitionData) {
-            _addAcquisitionDataToLinks(acquisitionData);
             var message = { type: 'enrich-acquisition-links' };
             _postMessage(message, function(data) {
                 var referrerData = data.referrerData;
