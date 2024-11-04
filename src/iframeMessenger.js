@@ -154,7 +154,7 @@
          * @return {int} Height integer
          */
         function _getHeight() {
-            var height = parseInt(document.body.offsetHeight, 10);
+            var height = parseInt(Math.ceil(document.body.getBoundingClientRect().height), 10);
             var styles = document.defaultView.getComputedStyle(document.body);
             height += parseInt(styles.getPropertyValue('margin-bottom'), 10);
             height += parseInt(styles.getPropertyValue('margin-top'), 10);
