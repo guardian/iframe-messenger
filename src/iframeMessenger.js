@@ -1,7 +1,7 @@
 /**
  * iframe-messenger
  *
- * version: 0.2.10
+ * version: 0.2.10-datawrapper
  * source: https://github.com/GuardianInteractive/iframe-messenger
  *
  */
