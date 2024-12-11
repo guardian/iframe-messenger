@@ -154,7 +154,8 @@
          * @return {int} Height integer
          */
         function _getHeight() {
-            var height = parseInt(Math.ceil(document.body.getBoundingClientRect().height), 10);
+            // 1 extra pixel needed to contain overflow currently in Datawrapper graphics
+            var height = Math.ceil(document.body.getBoundingClientRect().height) + 1;
             var styles = document.defaultView.getComputedStyle(document.body);
             height += parseInt(styles.getPropertyValue('margin-bottom'), 10);
             height += parseInt(styles.getPropertyValue('margin-top'), 10);
