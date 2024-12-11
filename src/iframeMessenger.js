@@ -369,9 +369,6 @@
 
             document.documentElement.style.height = '';
             document.body.style.height = '';
-
-            // Fix Chrome's scrollbar
-            document.querySelector('html').style.overflow = 'hidden';
         }
 
         /**
