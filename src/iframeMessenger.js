@@ -289,9 +289,11 @@
                 try {
                     data = JSON.parse(event.data);
                 } catch(err) {
-                    return console.log(
+                    console.error(
                         'iframeMessenger: Error parsing data. ' + err.toString()
                     );
+                    console.error(err);
+                    return;
                 }
 
                 // Check postmessage is expected
